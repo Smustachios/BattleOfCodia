@@ -7,7 +7,6 @@ public class Battle : MonoBehaviour
 	public Party MonsterParty;
 	// Currently active party in the battle
 	public Party ActiveParty;
-	private int _count = 0;
 
 	private void Start()
 	{
