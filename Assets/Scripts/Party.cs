@@ -32,6 +32,7 @@ public class Party : MonoBehaviour
 	{
 		Debug.Log($"Its {PartyName} turn");
 
+		UpdateCooldowns();
 		_activeCharacterTracker = -1;
 		TakeCharacterAction();
 	}
@@ -57,6 +58,21 @@ public class Party : MonoBehaviour
 			ChangeActiveCharacter();
 			AttackButtons.UpdateAttackButtons(ActiveCharacter.BasicAttack, ActiveCharacter.SpecialAttack);
 			PartyController.TurnOnController();
+		}
+	}
+
+	private void UpdateCooldowns()
+	{
+		foreach (Character character in CharacterList)
+		{
+			if (character.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
+			{
+				continue;
+			}
+			else
+			{
+                character.GetComponent<SpecialAttack>().RemainingCooldown -= 1;
+            }
 		}
 	}
 

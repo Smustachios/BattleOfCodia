@@ -148,10 +148,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BaseDamage: 1
-  BaseHeal: 3
-  MissChange: 0
-  CritChange: 0.1
-  CritRate: 3
+  MissChance: 0
+  CritChance: 0.05
+  CritRate: 2
 --- !u!114 &6897990447278769079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,7 +163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b100c44651d4d329f6250155ba3039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 3
+  BaseDamage: 3
+  MissChance: 0
+  CritChance: 0.05
+  CritRate: 2
+  Cooldown: 3
 --- !u!1 &3875801273252505539
 GameObject:
   m_ObjectHideFlags: 0

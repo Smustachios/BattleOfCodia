@@ -28,12 +28,27 @@ public class PlayerController : Controller
 
 			if(rayHit.collider != null) 
 			{
-				if (rayHit.collider.gameObject.CompareTag("Action"))
+				GameObject hittedObject = rayHit.collider.gameObject;
+
+
+                if (hittedObject.CompareTag("Action") && hittedObject.GetComponent<SpecialAttackButton>() != null)
+                {
+					if (ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
+					{
+                        rayHit.transform.GetComponent<IAction>().InvokeAction();
+                        IsControllersTurn = false;
+                    }
+					else
+					{
+						return;
+					}
+                }
+                else if (rayHit.collider.gameObject.CompareTag("Action"))
 				{
 					rayHit.transform.GetComponent<IAction>().InvokeAction();
 					IsControllersTurn = false;
 				}
-			}
+            }
 		}
 	}
 }

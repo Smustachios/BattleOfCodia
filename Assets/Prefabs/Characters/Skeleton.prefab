@@ -148,9 +148,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BaseDamage: 1
-  BaseHeal: 3
-  MissChange: 0.5
-  CritChange: 0
+  MissChance: 0.5
+  CritChance: 0
   CritRate: 0
 --- !u!114 &-3418296065053169018
 MonoBehaviour:
@@ -164,7 +163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b100c44651d4d329f6250155ba3039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 2
+  BaseDamage: 2
+  MissChance: 0
+  CritChance: 0
+  CritRate: 0
+  Cooldown: 3
 --- !u!1001 &974863250532596427
 PrefabInstance:
   m_ObjectHideFlags: 0
