@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5010112949133857135}
   - component: {fileID: 50092768013991112}
   - component: {fileID: -6562425436247121030}
+  - component: {fileID: -3418296065053169018}
   m_Layer: 0
   m_Name: Skeleton
   m_TagString: Character
@@ -108,7 +109,6 @@ MonoBehaviour:
   IsAlive: 1
   BasicAttack: {fileID: 21300000, guid: 2c04f4986ebc72e48a8b0c3eb2e42db2, type: 3}
   SpecialAttack: {fileID: 21300000, guid: 8a5f9829a049c704fa992203bfc451f2, type: 3}
-  CharacterInfo: {fileID: 0}
 --- !u!61 &50092768013991112
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -147,7 +147,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92a0d15a94a15642b18202f11278b06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  BaseDamage: 1
+  MissChance: 0.5
+  CritChance: 0
+  CritRate: 0
+--- !u!114 &-3418296065053169018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5010112949133857122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b100c44651d4d329f6250155ba3039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BaseDamage: 2
+  MissChance: 0
+  CritChance: 0
+  CritRate: 0
+  Cooldown: 3
 --- !u!1001 &974863250532596427
 PrefabInstance:
   m_ObjectHideFlags: 0

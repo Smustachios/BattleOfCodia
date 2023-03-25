@@ -6,35 +6,49 @@ public class PlayerController : Controller
 
 	private void Awake()
 	{
+		// Get main camera for getting mouse click ray positions
 		_camera = Camera.main;
 	}
 
-	// Start taking turns of taking actions with each character
+	// This method turns on this controller. Then controller and game starts waiting for
+	// player to start giving mouse inputs (choose some action to do)
 	public override void TurnOnController()
 	{
 		Debug.Log($"Its {ControlledParty.ActiveCharacter.name} turn!");
-		this.IsControllersTurn = true;
+		IsControllersTurn = true;
 	}
 
 	private void Update()
 	{
-		// If player clicks on action, invoke action and change turn to next character.
-		// If all characters have finish their turn, finish this controllers turn.
-		// Fire controller change event to be handled by battle class.
+		// If player clicks on some action button, invoke that action and action controls,
+		// then turn of controller to avoid using more than one action at the time
 		if (Input.GetMouseButtonDown(0) && IsControllersTurn)
 		{
 			RaycastHit2D rayHit = Physics2D.GetRayIntersection(_camera.ScreenPointToRay(Input.mousePosition));
 
 			if(rayHit.collider != null) 
 			{
-				if (rayHit.collider.gameObject.CompareTag("Action"))
+				GameObject hittedObject = rayHit.collider.gameObject;
+
+
+                if (hittedObject.CompareTag("Action") && hittedObject.GetComponent<SpecialAttackButton>() != null)
+                {
+					if (ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
+					{
+                        rayHit.transform.GetComponent<IAction>().InvokeAction();
+                        IsControllersTurn = false;
+                    }
+					else
+					{
+						return;
+					}
+                }
+                else if (rayHit.collider.gameObject.CompareTag("Action"))
 				{
-					Character enemy = ControlledParty.enemyParty.CharacterList[0];
-					rayHit.transform.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter, enemy);
-					this.IsControllersTurn = false;
-					ControlledParty.TakeCharacterAction();
+					rayHit.transform.GetComponent<IAction>().InvokeAction();
+					IsControllersTurn = false;
 				}
-			}
+            }
 		}
 	}
 }

@@ -1,39 +1,38 @@
-using JetBrains.Annotations;
 using UnityEngine;
 
-public class AttackButton : MonoBehaviour, IAction
+public class SpecialAttackButton : MonoBehaviour, IAction
 {
-	public Battle CurrentBattle { get; private set; }
+    public Battle CurrentBattle { get; private set; }
     private Character _enemy;
-	private bool _enemyChosen;
-    private bool _attackChosen;
+    private bool _enemyChosen;
+    private bool _specialAttackChosen;
     private Camera _camera;
 
     // If player clicks on attack button in game, start waiting for player to click
     // on enemy it wants to attack
-	public void InvokeAction()
-	{
+    public void InvokeAction()
+    {
         GetEnemy();
-	}
+    }
 
     // Change condition of enemy chosen to false to start waiting for update for
     // player clicks on enemy characters
-	private void GetEnemy()
-	{
-		_enemyChosen = false;
-        _attackChosen = true;
-	}
+    private void GetEnemy()
+    {
+        _enemyChosen = false;
+        _specialAttackChosen = true;
+    }
 
     // If player has clicked on chosen enemy start attacking it
     private void AttackEnemy(Character enemy)
     {
-        CurrentBattle.ActiveParty.ActiveCharacter.GetComponent<Attack>().StartAttack(enemy);
+        CurrentBattle.ActiveParty.ActiveCharacter.GetComponent<SpecialAttack>().StartAttack(enemy);
     }
 
     private void Update()
     {
         // Look for clicks on enemy characters while attack action is ongoing
-        if (Input.GetMouseButtonDown(0) && !_enemyChosen && _attackChosen)
+        if (Input.GetMouseButtonDown(0) && !_enemyChosen && _specialAttackChosen)
         {
             RaycastHit2D rayHit = Physics2D.GetRayIntersection(_camera.ScreenPointToRay(Input.mousePosition));
 
@@ -47,7 +46,7 @@ public class AttackButton : MonoBehaviour, IAction
                     // Update enemy if player has clicked on one and attack it
                     Character enemy = rayHit.transform.GetComponent<Character>();
                     _enemyChosen = true;
-                    _attackChosen = false;
+                    _specialAttackChosen = false;
                     AttackEnemy(enemy);
                 }
             }
@@ -55,8 +54,8 @@ public class AttackButton : MonoBehaviour, IAction
     }
 
     private void Awake()
-	{
-		CurrentBattle = GameObject.Find("GameManager").GetComponent<Battle>();
+    {
+        CurrentBattle = GameObject.Find("GameManager").GetComponent<Battle>();
         _camera = Camera.main;
-	}
+    }
 }

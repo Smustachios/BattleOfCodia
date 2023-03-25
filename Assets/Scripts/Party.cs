@@ -6,12 +6,13 @@ public class Party : MonoBehaviour
 {
 	public AttackButtons AttackButtons;
 	public Controller PartyController;
-	public Party enemyParty;
+	public Party EnemyParty;
 	public Character ActiveCharacter { get; private set; } // This is active character whos turn is do to some action next
 	public List<Character> CharacterList { get; private set; } // All characters who are in the party left
-	public int _activeCharacterTracker; // This is tracking active characters in the list
+	public List<GameObject> CharaterPrefabs;
+	private int _activeCharacterTracker = 0; // This is tracking active characters in the list
 
-
+	// Delegate to do party finished turn event for battle to know when to change parties
 	public delegate void OnPartyFinish(Party finishedParty);
 	public static OnPartyFinish PartyFinishedTurn;
 
@@ -19,31 +20,54 @@ public class Party : MonoBehaviour
 	public bool HasAliveCharacters = true;
 
 
-	private void Awake()
-	{
-		_activeCharacterTracker = 0;
-		// Get all characters and set first active character in the party
-		CharacterList = gameObject.GetComponentsInChildren<Character>().ToList();
-		ActiveCharacter = CharacterList[0];
-	}
+    public void InitPartyCharacters(params GameObject[] characters)
+    {
+        float offset = 0;
 
-	public void StartPartyTurn()
+        foreach (GameObject original in characters)
+        {
+			GameObject character = Instantiate(original, transform);
+			character.transform.position += new Vector3(0, offset, 0);
+            offset += 4.1f;
+        }
+
+		GetPartyCharacters();
+    }
+
+	private void GetPartyCharacters()
+	{
+		foreach (Character character in gameObject.GetComponentsInChildren<Character>())
+		{
+			if (character != null)
+			{
+				CharacterList.Add(character);
+			}
+		}
+
+        ActiveCharacter = CharacterList[0];
+    }
+
+    // When party starts its turn it will reset active characters to the beginning
+    // and then take action with that first character
+    public void StartPartyTurn()
 	{
 		Debug.Log($"Its {PartyName} turn");
+
+		UpdateCooldowns();
 		_activeCharacterTracker = -1;
 		TakeCharacterAction();
 	}
-	private void FinishPartyTurn()
-	{
-		PartyFinishedTurn?.Invoke(this);
-	}
 
+	// Call this for each character in the party
 	public void TakeCharacterAction()
 	{
+		// If all characters are finished, finish party turn
 		if (_activeCharacterTracker >= CharacterList.Count - 1)
 		{
 			FinishPartyTurn();
 		}
+		// Else change to next character, update attack buttons to new characters spells and
+		// start waiting for player to choose action for that character
 		else
 		{
 			ChangeActiveCharacter();
@@ -52,19 +76,36 @@ public class Party : MonoBehaviour
 		}
 	}
 
-	public void ChangeActiveCharacter()
-	{
-		// Set next active character from the list
-		_activeCharacterTracker++;
+    public void ChangeActiveCharacter()
+    {
+        // Update list tracker
+        _activeCharacterTracker++;
 
-		// If all characters have taken their turn loop back to beginning of list for next round
-		if(_activeCharacterTracker < CharacterList.Count)
+        // Make sure not loop out of list and change to new active character
+        if (_activeCharacterTracker < CharacterList.Count)
+        {
+            ActiveCharacter = CharacterList[_activeCharacterTracker];
+        }
+    }
+
+    private void UpdateCooldowns()
+	{
+		foreach (Character character in CharacterList)
 		{
-			ActiveCharacter = CharacterList[_activeCharacterTracker];
+			if (character.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
+			{
+				continue;
+			}
+			else
+			{
+                character.GetComponent<SpecialAttack>().RemainingCooldown -= 1;
+            }
 		}
 	}
 
-	private void OnDisable()
-	{
-	}
+    // Brodcast to battle that this party has finished its turn
+    private void FinishPartyTurn()
+    {
+        PartyFinishedTurn?.Invoke(this);
+    }
 }
