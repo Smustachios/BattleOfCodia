@@ -65,7 +65,6 @@
     <Compile Include="Assets/Scripts/Characters/Character.cs" />
     <Compile Include="Assets/Scripts/Party.cs" />
     <Compile Include="Assets/Scripts/Characters/CharaterInfoText.cs" />
-    <Compile Include="Assets/Scripts/Actions/DoNothingAction.cs" />
     <Compile Include="Assets/Scripts/Controller.cs" />
     <Compile Include="Assets/Scripts/PlayerController.cs" />
   </ItemGroup>

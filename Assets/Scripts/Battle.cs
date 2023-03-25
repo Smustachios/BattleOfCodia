@@ -2,21 +2,21 @@ using UnityEngine;
 
 public class Battle : MonoBehaviour
 {
-	// Both party refernces
+	// Both party in the battle
 	public Party HeroParty;
 	public Party MonsterParty;
 	// Currently active party in the battle
-	public Party ActiveParty;
+	public Party ActiveParty { get; private set; }
 
 	private void Start()
 	{
-		// Subscribe to controller finished taking turns with all its character event
+		// After party finishes its turn this event is called
 		Party.PartyFinishedTurn += TakePartyTurn;
 
 		StartBattle();
 	}
 
-	// Take in what controller just finished taking turns and change active controller to next one
+	// Take what party just finished its turn and change to next party
 	private void ChangeToNextParty(Party finishedParty)
 	{
 		if (finishedParty == HeroParty)
@@ -29,22 +29,22 @@ public class Battle : MonoBehaviour
 		}
 	}
 
-	// Starts battle with hero party and calls for that controller to take character turn.
-	// Once hero party controller has taken all his turns, it will start looping between both controllers for a gameplay.
+	// Start battle with hero party and start looping between both parties from here
 	private void StartBattle()
 	{
 		ActiveParty = HeroParty;
 		TakePartyTurn(MonsterParty);
 	}
 
-	// This method will be called once controller script finishes taking turns with each of partys characters.
-	// Then change to next controller to take its character turns and loop back here to change again.
+	// This method will be called once party brodcasts its ending turn event
+	// It will change party and calls new active party start turn method
 	private void TakePartyTurn(Party finishedParty)
 	{
 		ChangeToNextParty(finishedParty);
 		ActiveParty.StartPartyTurn();
 	}
 
+	// Unsubscribe from event
 	private void OnDisable()
 	{
 		Party.PartyFinishedTurn -= TakePartyTurn;

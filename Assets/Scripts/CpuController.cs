@@ -3,7 +3,7 @@ using System.Threading;
 
 public class CpuController : Controller
 {
-	// Let compu take turns with each character.
+	// Turn on controller for compu to take action with active character
 	public override void TurnOnController()
 	{
 		IsControllersTurn = true;
@@ -19,7 +19,7 @@ public class CpuController : Controller
 
 	private void ChooseAction()
 	{
-		Character enemy = ControlledParty.enemyParty.CharacterList[0];
+		Character enemy = ControlledParty.EnemyParty.CharacterList[0];
 		ControlledParty.ActiveCharacter.GetComponent<Attack>().StartAttack(enemy);
 	}
 }

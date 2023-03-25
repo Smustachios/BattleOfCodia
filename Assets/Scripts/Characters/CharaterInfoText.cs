@@ -15,6 +15,7 @@ public class CharaterInfoText : MonoBehaviour
 		_infoTexts[0].text = $"{_parent.MaxHp}/{_parent.MaxHp}"; // Set inital hp text
 	}
 
+	// Take in updated hp and update hp text box in the game
 	public void UpdateHPText(string newHp)
 	{
 		_infoTexts[0].text = $"{newHp}/{_parent.MaxHp}";
