@@ -13,7 +13,7 @@ public class Character : MonoBehaviour
 	// Item EquipedItem
 	
 
-	private void Awake()
+	private void Start()
 	{
 		CurrentHp = MaxHp;
 		CharacterInfo = GetComponentInChildren<CharaterInfoText>();

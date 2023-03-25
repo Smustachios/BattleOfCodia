@@ -59,8 +59,11 @@
     <Compile Include="Assets/Scripts/CpuController.cs" />
     <Compile Include="Assets/Scripts/Actions/IAction.cs" />
     <Compile Include="Assets/Scripts/Battle.cs" />
+    <Compile Include="Assets/Scripts/Levels/Level.cs" />
     <Compile Include="Assets/Scripts/Actions/Attack.cs" />
-    <Compile Include="Assets/Scripts/AttackButtons.cs" />
+    <Compile Include="Assets/Scripts/Actions/AttackButtons.cs" />
+    <Compile Include="Assets/Scripts/GameManager.cs" />
+    <Compile Include="Assets/Scripts/Actions/SpecialAttackButton.cs" />
     <Compile Include="Assets/Scripts/Actions/AttackButton.cs" />
     <Compile Include="Assets/Scripts/Characters/Character.cs" />
     <Compile Include="Assets/Scripts/Party.cs" />
@@ -68,7 +71,6 @@
     <Compile Include="Assets/Scripts/Controller.cs" />
     <Compile Include="Assets/Scripts/PlayerController.cs" />
     <Compile Include="Assets/Scripts/Actions/SpecialAttack.cs" />
-    <Compile Include="Assets/Scripts/Actions/SpecialAttackButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />
