@@ -2,7 +2,12 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
-	public int Damage = 1;
+	public int BaseDamage = 1;
+	public float MissChance = 0.1f;
+	public float CritChance = 0.1f;
+	public int CritRate = 2;
+
+	private int _attackDamage;
 	private Character _character;
 
 	private void Awake()
@@ -15,16 +20,33 @@ public class Attack : MonoBehaviour
 	// Then finish character turn and move onto next character
 	public void StartAttack(Character target)
 	{
-		InflictDamage(target);
-		Debug.Log($"{_character.name} did {Damage} to {target.name}");
+		_attackDamage = CalcDamage();
+		InflictDamage(target, _attackDamage);
+		Debug.Log($"{_character.name} did {_attackDamage} damage to {target.name}");
 		target.CharacterInfo.UpdateHPText(target.CurrentHp.ToString());
 		FinishAttack();
 	}
 
 	// Take enemy damage amount of the enemy hp
-	private void InflictDamage(Character enemy)
+	private void InflictDamage(Character enemy, int damage)
 	{
-		enemy.CurrentHp -= Damage;
+		enemy.CurrentHp -= damage;
+	}
+
+	private int CalcDamage(int enemyDefence = 0)
+	{
+		if (Random.Range(0, 2) < MissChance)
+		{
+			return 0;
+		}
+		else if (Random.Range(0, 2) < CritChance)
+		{
+			return CritRate * BaseDamage;
+        }
+		else
+		{
+			return BaseDamage;
+		}
 	}
 
 	// To finish attack call party to change characters

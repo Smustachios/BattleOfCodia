@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8966234771297243699}
   - component: {fileID: 7769595433187141049}
   - component: {fileID: -6174715118151399292}
+  - component: {fileID: 6897990447278769079}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Character
@@ -146,7 +147,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92a0d15a94a15642b18202f11278b06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  BaseDamage: 1
+  BaseHeal: 3
+  MissChange: 0
+  CritChange: 0.1
+  CritRate: 3
+--- !u!114 &6897990447278769079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364235471357348125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b100c44651d4d329f6250155ba3039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 3
 --- !u!1 &3875801273252505539
 GameObject:
   m_ObjectHideFlags: 0

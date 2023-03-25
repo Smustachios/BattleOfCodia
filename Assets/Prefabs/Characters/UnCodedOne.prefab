@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8656988150939286520}
   - component: {fileID: -379181624316356784}
   - component: {fileID: 8827257449377453446}
+  - component: {fileID: -7066612149072343567}
   m_Layer: 0
   m_Name: UnCodedOne
   m_TagString: Character
@@ -108,7 +109,6 @@ MonoBehaviour:
   IsAlive: 1
   BasicAttack: {fileID: 21300000, guid: eed44235dcbd621438f7c0c4f05e2356, type: 3}
   SpecialAttack: {fileID: 21300000, guid: bbe833a9207e7fa41bbd3ce71ad09605, type: 3}
-  CharacterInfo: {fileID: 0}
 --- !u!61 &-379181624316356784
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -148,6 +148,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 1
+--- !u!114 &-7066612149072343567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6765345007693221367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b100c44651d4d329f6250155ba3039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1578135037643105080
 PrefabInstance:
   m_ObjectHideFlags: 0
