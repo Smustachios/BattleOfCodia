@@ -15,10 +15,16 @@ public class Attack : MonoBehaviour
 		InflictDamage(target);
 		Debug.Log($"{_character.name} did {Damage} to {target.name}");
 		target.CharacterInfo.UpdateHPText(target.CurrentHp.ToString());
+		FinishAttack();
 	}
 
 	private void InflictDamage(Character enemy)
 	{
 		enemy.CurrentHp -= Damage;
 	}
+
+	private void FinishAttack()
+	{
+        _character.ParentParty.TakeCharacterAction();
+    }
 }

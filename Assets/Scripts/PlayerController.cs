@@ -13,7 +13,7 @@ public class PlayerController : Controller
 	public override void TurnOnController()
 	{
 		Debug.Log($"Its {ControlledParty.ActiveCharacter.name} turn!");
-		this.IsControllersTurn = true;
+		IsControllersTurn = true;
 	}
 
 	private void Update()
@@ -29,10 +29,8 @@ public class PlayerController : Controller
 			{
 				if (rayHit.collider.gameObject.CompareTag("Action"))
 				{
-					Character enemy = ControlledParty.enemyParty.CharacterList[0];
-					rayHit.transform.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter, enemy);
-					this.IsControllersTurn = false;
-					ControlledParty.TakeCharacterAction();
+					rayHit.transform.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter);
+					IsControllersTurn = false;
 				}
 			}
 		}

@@ -15,7 +15,6 @@ public class CpuController : Controller
 		}
 
 		IsControllersTurn = false;
-		ControlledParty.TakeCharacterAction();
 	}
 
 	private void ChooseAction()
