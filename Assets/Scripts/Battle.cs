@@ -7,11 +7,13 @@ public class Battle : MonoBehaviour
 	public Party MonsterParty;
 	// Currently active party in the battle
 	public Party ActiveParty { get; private set; }
+	private GameManager _gameManager;
 
 	private void Awake()
 	{
 		// After party finishes its turn this event is called
 		Party.PartyFinishedTurn += TakePartyTurn;
+		_gameManager = GetComponent<GameManager>();
 	}
 
 	// Start battle with hero party and start looping between both parties from here
@@ -19,6 +21,19 @@ public class Battle : MonoBehaviour
 	{
 		ActiveParty = HeroParty;
 		TakePartyTurn(MonsterParty);
+	}
+
+	public void FinishBattle(Party loser)
+	{
+		if (loser.PartyName == "Monster Party")
+		{
+			loser.DisbandParty();
+			_gameManager.ChangeLevel();
+		}
+		else
+		{
+			Debug.Log("YOU LOSE");
+		}
 	}
 
     // Take what party just finished its turn and change to next party

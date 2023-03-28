@@ -23,8 +23,13 @@ public class Level : MonoBehaviour
 
     public void LevelOne()
     {
-        _battle.HeroParty.InitPartyCharacters(Hero);
+        _battle.HeroParty.InitPartyCharacters(1.0f, Hero, Solider);
 
-        _battle.MonsterParty.InitPartyCharacters(Skeleton);
+        _battle.MonsterParty.InitPartyCharacters(-1.0f, Skeleton, Skeleton);
     }
+
+	public void LevelTwo()
+	{
+		_battle.MonsterParty.InitPartyCharacters(-1.0f, Skeleton, Skeleton);
+	}
 }

@@ -33,7 +33,7 @@ public class SpecialAttack : MonoBehaviour
     // Take enemy damage amount of the enemy hp
     private void InflictDamage(Character enemy, int damage)
     {
-        enemy.CurrentHp -= damage;
+        enemy.TakeDamage(damage);
     }
 
     private int CalcDamage(int enemyDefence = 0)

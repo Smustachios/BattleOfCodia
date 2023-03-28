@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
     public Party MonsterParty;
     private Level _levelBuilder;
     private Battle _currentBattle;
+	private int _currentLevel = 0;
 
     private void Awake()
     {
@@ -15,6 +16,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+		_currentLevel++;
         _levelBuilder.LevelOne();
+		_currentBattle.StartBattle();
     }
+
+	public void ChangeLevel()
+	{
+		_currentLevel++;
+		_levelBuilder.LevelTwo();
+	}
 }

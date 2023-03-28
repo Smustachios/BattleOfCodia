@@ -7,8 +7,10 @@ public class Party : MonoBehaviour
 	public AttackButtons AttackButtons;
 	public Controller PartyController;
 	public Party EnemyParty;
+	private Battle _currentBattle;
 	public Character ActiveCharacter { get; private set; } // This is active character whos turn is do to some action next
 	public List<Character> CharacterList { get; private set; } // All characters who are in the party left
+	private List<Character> _deadCharacters;
 	public List<GameObject> CharaterPrefabs;
 	private int _activeCharacterTracker = 0; // This is tracking active characters in the list
 
@@ -19,32 +21,24 @@ public class Party : MonoBehaviour
 	public string PartyName;
 	public bool HasAliveCharacters = true;
 
+	private void Awake()
+	{
+		CharacterList = new List<Character>();
+		_deadCharacters = new List<Character>();
+		_currentBattle = GameObject.Find("GameManager").GetComponent<Battle>();
+	}
 
-    public void InitPartyCharacters(params GameObject[] characters)
+	public void InitPartyCharacters(float offsetOperator, params GameObject[] characters)
     {
-        float offset = 0;
+		float offset = 0;
 
         foreach (GameObject original in characters)
         {
 			GameObject character = Instantiate(original, transform);
+			CharacterList.Add(character.GetComponent<Character>());
 			character.transform.position += new Vector3(0, offset, 0);
-            offset += 4.1f;
+            offset += (4.1f * offsetOperator);
         }
-
-		GetPartyCharacters();
-    }
-
-	private void GetPartyCharacters()
-	{
-		foreach (Character character in gameObject.GetComponentsInChildren<Character>())
-		{
-			if (character != null)
-			{
-				CharacterList.Add(character);
-			}
-		}
-
-        ActiveCharacter = CharacterList[0];
     }
 
     // When party starts its turn it will reset active characters to the beginning
@@ -76,7 +70,34 @@ public class Party : MonoBehaviour
 		}
 	}
 
-    public void ChangeActiveCharacter()
+	public void RemoveCharacter(Character character)
+	{
+		CharacterList.Remove(character);
+		_deadCharacters.Add(character);
+		IsPartyAlive();
+	}
+
+	public void DisbandParty()
+	{
+		foreach (Character character in _deadCharacters)
+		{
+			Destroy(character.gameObject);
+		}
+	}
+
+	private void IsPartyAlive()
+	{
+		if (CharacterList.Count <= 0) 
+		{
+			_currentBattle.FinishBattle(this);
+		}
+		else
+		{
+			return;
+		}
+	}
+
+    private void ChangeActiveCharacter()
     {
         // Update list tracker
         _activeCharacterTracker++;

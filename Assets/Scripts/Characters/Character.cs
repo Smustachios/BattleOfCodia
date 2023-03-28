@@ -19,4 +19,24 @@ public class Character : MonoBehaviour
 		CharacterInfo = GetComponentInChildren<CharaterInfoText>();
 		ParentParty = GetComponentInParent<Party>();
 	}
+
+	public void TakeDamage(int damage)
+	{
+		if (CurrentHp - damage > 0)
+		{
+			CurrentHp -= damage;
+		}
+		else
+		{
+			KillCharacter();
+		}
+	}
+
+	private void KillCharacter()
+	{
+		CurrentHp = 0;
+		gameObject.GetComponent<BoxCollider2D>().enabled = false;
+		gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+		ParentParty.RemoveCharacter(this);
+	}
 }

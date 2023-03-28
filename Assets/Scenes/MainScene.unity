@@ -171,6 +171,7 @@ MonoBehaviour:
   AttackButtons: {fileID: 1782759271}
   PartyController: {fileID: 868944922}
   EnemyParty: {fileID: 331131555}
+  CharaterPrefabs: []
   PartyName: Monster Party
   HasAliveCharacters: 1
 --- !u!1 &331131553
@@ -221,6 +222,7 @@ MonoBehaviour:
   AttackButtons: {fileID: 1782759271}
   PartyController: {fileID: 1763912984}
   EnemyParty: {fileID: 201209133}
+  CharaterPrefabs: []
   PartyName: Hero Party
   HasAliveCharacters: 1
 --- !u!1 &408378477
@@ -841,7 +843,6 @@ MonoBehaviour:
   Skeleton: {fileID: 5010112949133857122, guid: c7b2f5e37578caf4c9e965f7dd014900, type: 3}
   DarkHand: {fileID: 4694046248353525374, guid: 3b8803387eaa9c74cbee73b64329981b, type: 3}
   UndeadSolider: {fileID: 1840519150591031185, guid: 10670c52161e06249b7ab43594488bde, type: 3}
-  LevelNumber: 0
 --- !u!1 &1252279168
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ public class CharaterInfoText : MonoBehaviour
 		_infoTexts = gameObject.GetComponentsInChildren<TextMeshPro>(); // All text components on character object
 		_parent = GetComponentInParent<Character>(); // This is character whos text are to update
 
-		_infoTexts[1].text = _parent.name; // Set name text
+		_infoTexts[1].text = _parent.Name; // Set name text
 		_infoTexts[0].text = $"{_parent.MaxHp}/{_parent.MaxHp}"; // Set inital hp text
 	}
 
