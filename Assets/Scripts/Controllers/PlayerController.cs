@@ -14,7 +14,6 @@ public class PlayerController : Controller
 	// player to start giving mouse inputs (choose some action to do)
 	public override void TurnOnController()
 	{
-		Debug.Log($"Its {ControlledParty.ActiveCharacter.name} turn!");
 		IsControllersTurn = true;
 	}
 

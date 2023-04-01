@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class SpecialAttack : AttackBase
 {
-	public int Cooldown;
-	public int RemainingCooldown;
+    public int Cooldown;
+    public int RemainingCooldown;
 
     private void Awake()
     {
@@ -18,7 +18,7 @@ public class SpecialAttack : AttackBase
         int attackDamage = AttackModifier.CalculateDamage(Attacker, target, this);
         InflictDamage(target, attackDamage);
 
-        Debug.Log($"{Attacker.name} did {attackDamage} damage to {target.name}");
+        GameManager.UpdateBattleLog.Invoke($"{Attacker.name} did {attackDamage} damage to {target.name}");
         target.CharacterInfo.UpdateHPText(target.CurrentHp.ToString());
 
         RemainingCooldown = Cooldown; // Restart special attack cooldown counter

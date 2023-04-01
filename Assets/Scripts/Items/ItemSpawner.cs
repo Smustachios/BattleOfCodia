@@ -4,7 +4,8 @@ using UnityEngine;
 public class ItemSpawner : MonoBehaviour
 {
 	public List<GameObject> FoodPrefabs;
-	// Other item lists
+	public List<GameObject> GearPrefabs;
+	public List<GameObject> WeaponPrefabs;
 
 	private GameManager _gameManager;
 	private Backpack _heroBackpack;
@@ -19,17 +20,44 @@ public class ItemSpawner : MonoBehaviour
 	{
 		_heroBackpack = _gameManager.HeroParty.GetComponentInChildren<Backpack>();
 		_monsterBackpack = _gameManager.MonsterParty.GetComponentInChildren<Backpack>();
-		SpawnStartingItems();
 	}
 
-	// Spawn some items for both party in the beginning of first battle
-	public void SpawnStartingItems()
+	public GameObject[] SpawnRandomItems(int nOfItems)
 	{
-		for (int i = 0; i < 3; i++)
+		GameObject[] items = new GameObject[nOfItems];
+
+		for (int i = 0; i < nOfItems; i++)
 		{
-			_heroBackpack.AddItem(FoodPrefabs[Random.Range(0, FoodPrefabs.Count)]);
+			GameObject item = GearPrefabs[Random.Range(0, GearPrefabs.Count)];
+			items[i] = item;
 		}
-		
-		_monsterBackpack.AddItem(FoodPrefabs[0]);
+
+		return items;
 	}
+
+    public GameObject[] SpawnRandomFood(int nOfFood)
+    {
+        GameObject[] items = new GameObject[nOfFood];
+
+        for (int i = 0; i < nOfFood; i++)
+        {
+            GameObject item = FoodPrefabs[Random.Range(0, FoodPrefabs.Count)];
+            items[i] = item;
+        }
+
+        return items;
+    }
+
+    public GameObject[] SpawnRandomWeapons(int nOfWeapons)
+    {
+        GameObject[] items = new GameObject[nOfWeapons];
+
+        for (int i = 0; i < nOfWeapons; i++)
+        {
+            GameObject item = WeaponPrefabs[Random.Range(0, WeaponPrefabs.Count)];
+            items[i] = item;
+        }
+
+        return items;
+    }
 }

@@ -116,6 +116,7 @@ MonoBehaviour:
   BasicAttack: {fileID: 21300000, guid: 0389074d1deba1c448d45812db40c0df, type: 3}
   SpecialAttack: {fileID: 21300000, guid: 2d089513ae4adfc48a683c362ad9992c, type: 3}
   CharacterFrame: {fileID: 2209286591314855824}
+  CharacterItemSlot: {fileID: 1219330265399199951}
 --- !u!61 &-8511997441290568098
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -261,6 +262,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d29bd52b9d474f4e99c4661b1b8709e, type: 3}
+--- !u!1 &1219330265399199951 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4127300764393229095, guid: 8d29bd52b9d474f4e99c4661b1b8709e, type: 3}
+  m_PrefabInstance: {fileID: 3003039239347356648}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5301290268139862571 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6934706896719706563, guid: 8d29bd52b9d474f4e99c4661b1b8709e, type: 3}

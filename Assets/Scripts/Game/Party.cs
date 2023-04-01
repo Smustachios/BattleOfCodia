@@ -6,6 +6,7 @@ public class Party : MonoBehaviour
 	public AttackButtons AttackButtons;
 	public Controller PartyController;
 	public Party EnemyParty;
+	public Backpack Backpack;
 	private Battle _currentBattle;
 
 	public Character ActiveCharacter { get; private set; }
@@ -26,13 +27,14 @@ public class Party : MonoBehaviour
 		CharacterList = new List<Character>();
 		_deadCharacters = new List<Character>();
 		_currentBattle = GameObject.Find("GameManager").GetComponent<Battle>();
+		Backpack = GetComponentInChildren<Backpack>();
 	}
 
 	// When party starts its turn it will reset active characters to the beginning
 	// and then take action with that first character
 	public void StartPartyTurn()
 	{
-		Debug.Log($"Its {PartyName} turn");
+		GameManager.UpdateBattleLog.Invoke($"Its {PartyName} turn");
 
 		UpdateCooldowns(); // Decrease cooldowns in the beginning of the turn
 		_activeCharacterTracker = -1;
@@ -121,7 +123,8 @@ public class Party : MonoBehaviour
 				ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown);
 			ActiveCharacter.CharacterFrame.color = Color.green;
 
-			PartyController.TurnOnController();
+			GameManager.UpdateBattleLog.Invoke($"Its {ActiveCharacter.Name} turn!");
+            PartyController.TurnOnController();
 		}
 	}
 

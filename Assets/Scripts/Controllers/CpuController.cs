@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Threading;
+using System.Collections;
 
 public class CpuController : Controller
 {
@@ -7,28 +7,55 @@ public class CpuController : Controller
 	public override void TurnOnController()
 	{
 		IsControllersTurn = true;
-		Debug.Log($"Its {ControlledParty.ActiveCharacter.name} turn!");
 
 		if (IsControllersTurn) 
 		{
-			ChooseAction();
+			StartCoroutine(ChooseAction());
 		}
 
 		IsControllersTurn = false;
 	}
 
 	// Choose random character to attack and always use special attack if you can
-	private void ChooseAction()
+	private IEnumerator ChooseAction()
 	{
-		Character enemy = ControlledParty.EnemyParty.CharacterList[Random.Range(0, ControlledParty.EnemyParty.CharacterList.Count - 1)];
+        yield return new WaitForSeconds(2.5f);
 
-		if (ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown <= 0) 
+		Character character = ControlledParty.ActiveCharacter;
+		Backpack backpack = ControlledParty.Backpack;
+
+		if (character.MaxHp / 2 < character.CurrentHp && Random.Range(0.0f, 2.0f) > 0.5f && backpack.Foods.Count > 0)
 		{
-			ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().StartAttack(enemy);
+			IItem food = backpack.Foods[Random.Range(0, backpack.Foods.Count)].GetComponent<IItem>();
+
+			food.UseItem();
+			food.DestroyItem();
 		}
+		else if (backpack.Weapons.Count != 0 && Random.Range(0.0f, 2.0f) > 0.75f && backpack.Weapons.Count > 0)
+		{
+			IItem weapon = backpack.Weapons[Random.Range(0, backpack.Weapons.Count)].GetComponent<IItem>();
+
+			weapon.UseItem();
+        }
+
+		else if (backpack.Gear.Count != 0 && Random.Range(0.0f, 2.0f) > 0.75f && backpack.Gear.Count > 0)
+		{
+            IItem item = backpack.Gear[Random.Range(0, backpack.Gear.Count)].GetComponent<IItem>();
+
+            item.UseItem();
+        }
 		else
 		{
-			ControlledParty.ActiveCharacter.GetComponent<Attack>().StartAttack(enemy);
-		}
+            Character enemy = ControlledParty.EnemyParty.CharacterList[Random.Range(0, ControlledParty.EnemyParty.CharacterList.Count - 1)];
+
+            if (ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
+            {
+                ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().StartAttack(enemy);
+            }
+            else
+            {
+                ControlledParty.ActiveCharacter.GetComponent<Attack>().StartAttack(enemy);
+            }
+        }
 	}
 }

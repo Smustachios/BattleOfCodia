@@ -7,7 +7,7 @@ public static class AttackModifier
 		int attackDamage = 0;
 
 		// Check if attack will miss
-		if (Random.Range(0, 2) < attack.MissChance)
+		if (Random.Range(0.0f, 2.0f) < attack.MissChance)
 		{
 			return 0;
 		}
@@ -20,7 +20,7 @@ public static class AttackModifier
 			// Check if attack will be critical
 			if (attack.CritChance > 0)
 			{
-				if (Random.Range(0, 2) < attack.CritChance)
+				if (Random.Range(0.0f, 2.0f) < attack.CritChance)
 				{
 					attackDamage += Random.Range(attack.MinCritBonus, attack.MaxCritBonus + 1);
 				}

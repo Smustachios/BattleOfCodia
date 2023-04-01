@@ -22,7 +22,9 @@ public class Character : MonoBehaviour
 
 	public CharaterInfoText CharacterInfo { get; private set; }
 	public Party ParentParty { get; private set; }
-	// Item EquipedItem
+
+	public Armor EquipedItem { get; private set; }
+	public GameObject CharacterItemSlot;
 	
 
 	private void Start()
@@ -30,6 +32,21 @@ public class Character : MonoBehaviour
 		CurrentHp = MaxHp;
 		CharacterInfo = GetComponentInChildren<CharaterInfoText>();
 		ParentParty = GetComponentInParent<Party>();
+	}
+
+	// Item calls this to equip item and use its perks
+	public void EquipItem(Armor item)
+	{
+		if (EquipedItem != null)
+		{
+			SwapItem(item);
+		}
+		else
+		{
+            EquipedItem = item;
+            item.gameObject.transform.SetParent(CharacterItemSlot.transform, false);
+            item.AddStats(this);
+        }
 	}
 
 	// Add character boost attack stat to ongoing attack
@@ -95,8 +112,24 @@ public class Character : MonoBehaviour
 		CurrentHp = 0;
 		gameObject.GetComponent<BoxCollider2D>().enabled = false;
 		gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+
+		if (EquipedItem != null)
+		{
+            EquipedItem.DestroyItem();
+        }
+		
 		ParentParty.RemoveCharacter(this);
 	}
+
+	private void SwapItem(Armor item)
+	{
+		ParentParty.Backpack.AddItem(EquipedItem.gameObject);
+		EquipedItem.DestroyItem();
+
+        EquipedItem = item;
+        item.gameObject.transform.SetParent(CharacterItemSlot.transform, false);
+        item.AddStats(this);
+    }
 }
 
 // These are types of stats this game uses

@@ -1,11 +1,9 @@
 public interface IItem
 {
-	// All items have a specific type
-	ItemType Type { get; }
-
 	public void UseItem();
 	public void DestroyItem();
+	public ItemType ReturnItemType();
 }
 
 // These are item types in this game
-public enum ItemType { Empty, Food, Scroll, Armor, Weapon }
+public enum ItemType { Food, Scroll, Armor, Weapon }

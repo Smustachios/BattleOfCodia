@@ -15,7 +15,7 @@ public class Attack : AttackBase
 		int attackDamage = AttackModifier.CalculateDamage(Attacker, target, this); // Considers all the stats to calculate damage
 		InflictDamage(target, attackDamage);
 
-		Debug.Log($"{Attacker.name} did {attackDamage} damage to {target.name}");
+		GameManager.UpdateBattleLog.Invoke($"{Attacker.name} did {attackDamage} damage to {target.name}");
 		target.CharacterInfo.UpdateHPText(target.CurrentHp.ToString());
 
 		FinishAttack();
