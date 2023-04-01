@@ -3,7 +3,6 @@ using UnityEngine;
 public class SpecialAttackButton : MonoBehaviour, IAction
 {
     public Battle CurrentBattle { get; private set; }
-    private Character _enemy;
     private bool _enemyChosen;
     private bool _specialAttackChosen;
     private Camera _camera;
@@ -43,7 +42,7 @@ public class SpecialAttackButton : MonoBehaviour, IAction
                 // yourself or your party members.. 
                 if (rayHit.collider.gameObject.CompareTag("Character"))
                 {
-                    // Update enemy if player has clicked on one and attack it
+                    // Get enemy character and attack it
                     Character enemy = rayHit.transform.GetComponent<Character>();
                     _enemyChosen = true;
                     _specialAttackChosen = false;

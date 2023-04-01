@@ -104,11 +104,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Undead Solider
+  Type: 0
   CurrentHp: 0
   MaxHp: 15
-  IsAlive: 1
+  MeleeDamage: 2
+  RangeDamage: 0
+  MagicDamage: 0
+  MeleeDefence: 2
+  RangeDefence: 0
+  MagicDefence: -1
   BasicAttack: {fileID: 21300000, guid: 300abdf8cbdd5c742a05b6506767fd64, type: 3}
   SpecialAttack: {fileID: 21300000, guid: a2563f2b8dbc4044b9a50537d3a29962, type: 3}
+  CharacterFrame: {fileID: 4693444950294929330}
 --- !u!61 &4209366115548952480
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -147,7 +154,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92a0d15a94a15642b18202f11278b06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  AttackType: 0
+  Attacker: {fileID: 0}
+  MinBaseDamage: 1
+  MaxBaseDamage: 2
+  MissChance: 0.05
+  CritChance: 0.05
+  MinCritBonus: 1
+  MaxCritBonus: 1
 --- !u!114 &-201362657517344862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,6 +174,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b100c44651d4d329f6250155ba3039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AttackType: 0
+  Attacker: {fileID: 0}
+  MinBaseDamage: 2
+  MaxBaseDamage: 2
+  MissChance: 0
+  CritChance: 0.05
+  MinCritBonus: 0
+  MaxCritBonus: 0
+  Cooldown: 4
+  RemainingCooldown: 0
 --- !u!1001 &543105819870348363
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -221,6 +245,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24fa0928ce7f527459c5f6f16da1d981, type: 3}
+--- !u!212 &4693444950294929330 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5092173206026968057, guid: 24fa0928ce7f527459c5f6f16da1d981, type: 3}
+  m_PrefabInstance: {fileID: 543105819870348363}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7597083081132575915 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7991423212130420960, guid: 24fa0928ce7f527459c5f6f16da1d981, type: 3}

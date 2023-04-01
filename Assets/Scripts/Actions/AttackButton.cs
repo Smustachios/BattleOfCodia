@@ -1,10 +1,8 @@
-using JetBrains.Annotations;
 using UnityEngine;
 
 public class AttackButton : MonoBehaviour, IAction
 {
 	public Battle CurrentBattle { get; private set; }
-    private Character _enemy;
 	private bool _enemyChosen;
     private bool _attackChosen;
     private Camera _camera;
@@ -17,7 +15,7 @@ public class AttackButton : MonoBehaviour, IAction
 	}
 
     // Change condition of enemy chosen to false to start waiting for update for
-    // player clicks on enemy characters
+    // player to choose target enemy
 	private void GetEnemy()
 	{
 		_enemyChosen = false;
@@ -44,7 +42,7 @@ public class AttackButton : MonoBehaviour, IAction
                 // yourself or your party members.. 
                 if (rayHit.collider.gameObject.CompareTag("Character"))
                 {
-                    // Update enemy if player has clicked on one and attack it
+                    // Get enemy character player clicked on and attack it
                     Character enemy = rayHit.transform.GetComponent<Character>();
                     _enemyChosen = true;
                     _attackChosen = false;

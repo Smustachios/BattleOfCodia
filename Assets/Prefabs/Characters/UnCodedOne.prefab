@@ -104,11 +104,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Uncoded One
+  Type: 2
   CurrentHp: 0
-  MaxHp: 25
-  IsAlive: 1
+  MaxHp: 35
+  MeleeDamage: 0
+  RangeDamage: 0
+  MagicDamage: 2
+  MeleeDefence: 0
+  RangeDefence: 1
+  MagicDefence: 1
   BasicAttack: {fileID: 21300000, guid: eed44235dcbd621438f7c0c4f05e2356, type: 3}
   SpecialAttack: {fileID: 21300000, guid: bbe833a9207e7fa41bbd3ce71ad09605, type: 3}
+  CharacterFrame: {fileID: 4592705183274699756}
 --- !u!61 &-379181624316356784
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -147,7 +154,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92a0d15a94a15642b18202f11278b06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  AttackType: 2
+  Attacker: {fileID: 0}
+  MinBaseDamage: 2
+  MaxBaseDamage: 5
+  MissChance: 0.05
+  CritChance: 0.05
+  MinCritBonus: 1
+  MaxCritBonus: 1
 --- !u!114 &-7066612149072343567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,6 +174,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b100c44651d4d329f6250155ba3039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AttackType: 2
+  Attacker: {fileID: 0}
+  MinBaseDamage: 3
+  MaxBaseDamage: 5
+  MissChance: 0.05
+  CritChance: 0.05
+  MinCritBonus: 0
+  MaxCritBonus: 0
+  Cooldown: 4
+  RemainingCooldown: 0
 --- !u!1001 &1578135037643105080
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -356,5 +380,10 @@ PrefabInstance:
 --- !u!4 &1725059634186197237 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7991423212130420960, guid: 24fa0928ce7f527459c5f6f16da1d981, type: 3}
+  m_PrefabInstance: {fileID: 8725611624407289877}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &4592705183274699756 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5092173206026968057, guid: 24fa0928ce7f527459c5f6f16da1d981, type: 3}
   m_PrefabInstance: {fileID: 8725611624407289877}
   m_PrefabAsset: {fileID: 0}

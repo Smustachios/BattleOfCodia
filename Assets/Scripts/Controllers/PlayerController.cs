@@ -30,9 +30,10 @@ public class PlayerController : Controller
 			{
 				GameObject hittedObject = rayHit.collider.gameObject;
 
-
+				// This is true if player chooses special attack
                 if (hittedObject.CompareTag("Action") && hittedObject.GetComponent<SpecialAttackButton>() != null)
                 {
+					// Can only be invoked if cooldown is 0
 					if (ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
 					{
                         rayHit.transform.GetComponent<IAction>().InvokeAction();
@@ -43,6 +44,7 @@ public class PlayerController : Controller
 						return;
 					}
                 }
+				// This is true for other actions
                 else if (rayHit.collider.gameObject.CompareTag("Action"))
 				{
 					rayHit.transform.GetComponent<IAction>().InvokeAction();

@@ -1,57 +1,23 @@
 using UnityEngine;
 
-public class Attack : MonoBehaviour
+public class Attack : AttackBase
 {
-	public int BaseDamage = 1;
-	public float MissChance = 0.1f;
-	public float CritChance = 0.1f;
-	public int CritRate = 2;
-
-	private int _attackDamage;
-	private Character _character;
-
 	private void Awake()
 	{
 		// This is the character who can use this attack
-		_character = GetComponent<Character>();
+		Attacker = GetComponent<Character>();
 	}
 
 	// Calculate and then inflick damage to enemy character
 	// Then finish character turn and move onto next character
-	public void StartAttack(Character target)
+	public override void StartAttack(Character target)
 	{
-		_attackDamage = CalcDamage();
-		InflictDamage(target, _attackDamage);
-		Debug.Log($"{_character.name} did {_attackDamage} damage to {target.name}");
+		int attackDamage = AttackModifier.CalculateDamage(Attacker, target, this); // Considers all the stats to calculate damage
+		InflictDamage(target, attackDamage);
+
+		Debug.Log($"{Attacker.name} did {attackDamage} damage to {target.name}");
 		target.CharacterInfo.UpdateHPText(target.CurrentHp.ToString());
+
 		FinishAttack();
 	}
-
-	// Take enemy damage amount of the enemy hp
-	private void InflictDamage(Character enemy, int damage)
-	{
-		enemy.TakeDamage(damage);
-	}
-
-	private int CalcDamage(int enemyDefence = 0)
-	{
-		if (Random.Range(0, 2) < MissChance)
-		{
-			return 0;
-		}
-		else if (Random.Range(0, 2) < CritChance)
-		{
-			return CritRate * BaseDamage;
-        }
-		else
-		{
-			return BaseDamage;
-		}
-	}
-
-	// To finish attack call party to change characters
-	private void FinishAttack()
-	{
-        _character.ParentParty.TakeCharacterAction();
-    }
 }

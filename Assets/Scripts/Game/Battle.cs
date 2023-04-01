@@ -2,17 +2,14 @@ using UnityEngine;
 
 public class Battle : MonoBehaviour
 {
-	// Both party in the battle
 	public Party HeroParty;
 	public Party MonsterParty;
-	// Currently active party in the battle
+
 	public Party ActiveParty { get; private set; }
 	private GameManager _gameManager;
 
 	private void Awake()
 	{
-		// After party finishes its turn this event is called
-		Party.PartyFinishedTurn += TakePartyTurn;
 		_gameManager = GetComponent<GameManager>();
 	}
 
@@ -20,14 +17,16 @@ public class Battle : MonoBehaviour
 	public void StartBattle()
 	{
 		ActiveParty = HeroParty;
-		TakePartyTurn(MonsterParty);
+		TakePartyTurn();
 	}
 
+	// If player kills all the characters in monster party, load new level
+	// Otherwise game is lost
 	public void FinishBattle(Party loser)
 	{
 		if (loser.PartyName == "Monster Party")
 		{
-			loser.DisbandParty();
+			MonsterParty.ClearDeadCharacters();
 			_gameManager.ChangeLevel();
 		}
 		else
@@ -37,7 +36,7 @@ public class Battle : MonoBehaviour
 	}
 
     // Take what party just finished its turn and change to next party
-    private void ChangeToNextParty(Party finishedParty)
+    public void ChangeToNextParty(Party finishedParty)
     {
         if (finishedParty == HeroParty)
         {
@@ -51,15 +50,8 @@ public class Battle : MonoBehaviour
 
     // This method will be called once party brodcasts its ending turn event
     // It will change party and calls new active party start turn method
-    private void TakePartyTurn(Party finishedParty)
+    public void TakePartyTurn()
 	{
-		ChangeToNextParty(finishedParty);
 		ActiveParty.StartPartyTurn();
-	}
-
-	// Unsubscribe from event
-	private void OnDisable()
-	{
-		Party.PartyFinishedTurn -= TakePartyTurn;
 	}
 }
