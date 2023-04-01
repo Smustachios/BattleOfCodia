@@ -172,7 +172,6 @@ MonoBehaviour:
   PartyController: {fileID: 868944922}
   EnemyParty: {fileID: 331131555}
   PartyName: Monster Party
-  HasAliveCharacters: 1
   PlacementOffSetOperator: -1
 --- !u!1 &331131553
 GameObject:
@@ -223,7 +222,6 @@ MonoBehaviour:
   PartyController: {fileID: 1763912984}
   EnemyParty: {fileID: 201209133}
   PartyName: Hero Party
-  HasAliveCharacters: 1
   PlacementOffSetOperator: 1
 --- !u!1 &408378477
 GameObject:
