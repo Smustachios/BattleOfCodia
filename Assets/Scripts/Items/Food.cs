@@ -42,7 +42,7 @@ public class Food : MonoBehaviour, IItem, IStatsRenderer
 		UpdateStatsInfoText();
 	}
 
-	private void UpdateStatsInfoText() 
+	public void UpdateStatsInfoText() 
 	{
 		Stats.Clear();
 

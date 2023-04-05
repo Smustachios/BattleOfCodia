@@ -141,7 +141,7 @@ public class Character : MonoBehaviour, IStatsRenderer
         item.AddStats(this);
     }
 
-	private void UpdateStatsInfoText()
+	public void UpdateStatsInfoText()
 	{
 		Stats.Clear();
 

@@ -5,5 +5,5 @@ public interface IStatsRenderer
 	public Dictionary<string, int> Stats { get; }
 	public StatsRenderer StatsInfoRenderer { get; }
 
-	private void UpdateStatsInfoText() { }
+	public void UpdateStatsInfoText();
 }

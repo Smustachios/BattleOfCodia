@@ -61,7 +61,7 @@ public class Armor : MonoBehaviour, IItem, IStatsRenderer
         character.MagicDefence -= MagicDefenceBonus;
     }
 
-	private void UpdateStatsInfoText() 
+	public void UpdateStatsInfoText() 
 	{
 		Stats.Add("Melee Dmg", MeleeDamageBonus);
 		Stats.Add("Range Dmg", RangeDamageBonus);

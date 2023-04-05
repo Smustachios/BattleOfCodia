@@ -1,7 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Attack : AttackBase
 {
+	public StatsRenderer StatsInfoRenderer { get; private set; }
+	public Dictionary<string, int> Stats { get; private set; }
+
 	private void Awake()
 	{
 		// This is the character who can use this attack
@@ -19,5 +23,20 @@ public class Attack : AttackBase
 		target.CharacterInfo.UpdateHPText(target.CurrentHp.ToString());
 
 		FinishAttack();
+	}
+
+	public void UpdateStatsInfoText(StatsRenderer info)
+	{
+		Stats = new Dictionary<string, int>
+		{
+			{ "Min Dmg", MinBaseDamage },
+			{ "Max Dmg", MaxBaseDamage },
+			{ "Miss %", (int)(MissChance * 10) },
+			{ "Crit %", (int)(CritChance * 10) },
+			{ "Min Crit", MinCritBonus },
+			{ "Max Crit", MaxCritBonus }
+		};
+
+		info.UpdateStatsInfo(Stats);
 	}
 }

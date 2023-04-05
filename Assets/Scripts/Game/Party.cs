@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Party : MonoBehaviour
@@ -122,6 +123,9 @@ public class Party : MonoBehaviour
 			AttackButtons.UpdateAttackButtons(ActiveCharacter.BasicAttack, ActiveCharacter.SpecialAttack, 
 				ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown);
 			ActiveCharacter.CharacterFrame.color = Color.green;
+
+			ActiveCharacter.GetComponent<SpecialAttack>().UpdateStatsInfoText(AttackButtons.StatsRenderers[1]);
+			ActiveCharacter.GetComponent<Attack>().UpdateStatsInfoText(AttackButtons.StatsRenderers[0]);
 
 			GameManager.UpdateBattleLog.Invoke($"Its {ActiveCharacter.Name} turn!");
             PartyController.TurnOnController();
