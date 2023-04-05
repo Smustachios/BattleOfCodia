@@ -19,6 +19,9 @@ public class Backpack : MonoBehaviour
 
 		_itemSlots = new List<ItemSlot>();
 		_items = new List<GameObject>();
+		Foods = new List<GameObject>();
+		Gear = new List<GameObject>();
+		Weapons = new List<GameObject>();
 
 		// Get all the itemslots in backpack
 		_itemTracker = 0;
@@ -43,6 +46,7 @@ public class Backpack : MonoBehaviour
                 GameObject newItem = Instantiate(addedItem, _itemSlots[_itemTracker].transform);
                 _itemSlots[_itemTracker].GetComponent<ItemSlot>().AddItemToSlot(newItem);
                 _items.Add(newItem);
+				ReturnItemTypedList(newItem).Add(newItem);
                 _itemTracker++;
             }
 		}
@@ -52,6 +56,7 @@ public class Backpack : MonoBehaviour
 	public void RemoveItem(GameObject item)
 	{
 		_items.Remove(item);
+		ReturnItemTypedList(item).Remove(item);
         _itemTracker--;
 		Sort();
 	}
@@ -65,8 +70,14 @@ public class Backpack : MonoBehaviour
 		}
 	}
 
-	private void SortItemToList(GameObject item)
+	private List<GameObject> ReturnItemTypedList(GameObject item)
 	{
-		
+		return item.GetComponent<IItem>().ReturnItemType() switch
+		{
+			ItemType.Food => Foods,
+			ItemType.Armor => Gear,
+			ItemType.Weapon => Weapons,
+			_ => null
+		};
 	}
 }

@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Armor : MonoBehaviour, IItem
+public class Armor : MonoBehaviour, IItem, IStatsRenderer
 {
     public ItemType Type;
     public string Name;
@@ -14,6 +15,9 @@ public class Armor : MonoBehaviour, IItem
     public int MagicDefenceBonus;
 
     private Backpack _backpack;
+
+	public StatsRenderer StatsInfoRenderer { get; private set; }
+	public Dictionary<string, int> Stats { get; private set; }
 
     public void UseItem()
     {
@@ -42,8 +46,8 @@ public class Armor : MonoBehaviour, IItem
         character.MagicDamage += MagicDamageBonus;
 
         character.MeleeDefence += MeleeDefenceBonus;
-        character.RangeDefence += RangeDamageBonus;
-        character.MagicDefence += MagicDamageBonus;
+        character.RangeDefence += RangeDefenceBonus;
+        character.MagicDefence += MagicDefenceBonus;
     }
 
     public void RemoveStats(Character character)
@@ -53,12 +57,32 @@ public class Armor : MonoBehaviour, IItem
         character.MagicDamage -= MagicDamageBonus;
 
         character.MeleeDefence -= MeleeDefenceBonus;
-        character.RangeDefence -= RangeDamageBonus;
-        character.MagicDefence -= MagicDamageBonus;
+        character.RangeDefence -= RangeDefenceBonus;
+        character.MagicDefence -= MagicDefenceBonus;
     }
 
-    private void Awake()
+	private void UpdateStatsInfoText() 
+	{
+		Stats.Add("Melee Dmg", MeleeDamageBonus);
+		Stats.Add("Range Dmg", RangeDamageBonus);
+		Stats.Add("Magic Dmg", MagicDamageBonus);
+
+		Stats.Add("Melee Defence", MeleeDefenceBonus);
+		Stats.Add("Range Defence", RangeDefenceBonus);
+		Stats.Add("Magic Defence", MagicDefenceBonus);
+
+		StatsInfoRenderer.UpdateStatsInfo(Stats);
+	}
+
+	private void Awake()
     {
         _backpack = GetComponentInParent<Backpack>();
-    }
+		StatsInfoRenderer = GetComponentInChildren<StatsRenderer>();
+		Stats = new Dictionary<string, int>();
+	}
+
+	private void Start()
+	{
+		UpdateStatsInfoText();
+	}
 }

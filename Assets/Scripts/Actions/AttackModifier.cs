@@ -7,8 +7,9 @@ public static class AttackModifier
 		int attackDamage = 0;
 
 		// Check if attack will miss
-		if (Random.Range(0.0f, 2.0f) < attack.MissChance)
+		if (Random.value < attack.MissChance)
 		{
+			GameManager.UpdateBattleLog.Invoke("Attack missed!");
 			return 0;
 		}
 		// Calculate what damage attack will do
@@ -20,7 +21,7 @@ public static class AttackModifier
 			// Check if attack will be critical
 			if (attack.CritChance > 0)
 			{
-				if (Random.Range(0.0f, 2.0f) < attack.CritChance)
+				if (Random.value < attack.CritChance)
 				{
 					attackDamage += Random.Range(attack.MinCritBonus, attack.MaxCritBonus + 1);
 				}
@@ -34,6 +35,11 @@ public static class AttackModifier
 
 			// Target will try to take of some damage with type defence
 			attackDamage -= defender.DefendAttack(attack.AttackType);
+
+			if (attackDamage < 0) 
+			{
+				attackDamage = 0; 
+			}
 
 			return attackDamage;
 		}

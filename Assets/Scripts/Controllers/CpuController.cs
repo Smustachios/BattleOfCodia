@@ -24,21 +24,21 @@ public class CpuController : Controller
 		Character character = ControlledParty.ActiveCharacter;
 		Backpack backpack = ControlledParty.Backpack;
 
-		if (character.MaxHp / 2 < character.CurrentHp && Random.Range(0.0f, 2.0f) > 0.5f && backpack.Foods.Count > 0)
+		if (character.MaxHp / 2 > character.CurrentHp && Random.value > 0.5f && backpack.Foods.Count > 0)
 		{
 			IItem food = backpack.Foods[Random.Range(0, backpack.Foods.Count)].GetComponent<IItem>();
 
 			food.UseItem();
 			food.DestroyItem();
 		}
-		else if (backpack.Weapons.Count != 0 && Random.Range(0.0f, 2.0f) > 0.75f && backpack.Weapons.Count > 0)
+		else if (backpack.Weapons.Count != 0 && Random.value > 0.75f && backpack.Weapons.Count > 0 && character.EquipedItem == null)
 		{
 			IItem weapon = backpack.Weapons[Random.Range(0, backpack.Weapons.Count)].GetComponent<IItem>();
 
 			weapon.UseItem();
         }
 
-		else if (backpack.Gear.Count != 0 && Random.Range(0.0f, 2.0f) > 0.75f && backpack.Gear.Count > 0)
+		else if (backpack.Gear.Count != 0 && Random.value > 0.75f && backpack.Gear.Count > 0 && character.EquipedItem == null)
 		{
             IItem item = backpack.Gear[Random.Range(0, backpack.Gear.Count)].GetComponent<IItem>();
 
@@ -46,7 +46,7 @@ public class CpuController : Controller
         }
 		else
 		{
-            Character enemy = ControlledParty.EnemyParty.CharacterList[Random.Range(0, ControlledParty.EnemyParty.CharacterList.Count - 1)];
+            Character enemy = ControlledParty.EnemyParty.CharacterList[Random.Range(0, ControlledParty.EnemyParty.CharacterList.Count)];
 
             if (ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
             {

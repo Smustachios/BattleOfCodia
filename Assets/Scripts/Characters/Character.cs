@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, IStatsRenderer
 {
 	public string Name;
 	public CharacterType Type;
@@ -21,6 +22,8 @@ public class Character : MonoBehaviour
 	public SpriteRenderer CharacterFrame;
 
 	public CharaterInfoText CharacterInfo { get; private set; }
+	public Dictionary<string, int> Stats { get; private set; }
+	public StatsRenderer StatsInfoRenderer { get; private set; }
 	public Party ParentParty { get; private set; }
 
 	public Armor EquipedItem { get; private set; }
@@ -30,8 +33,13 @@ public class Character : MonoBehaviour
 	private void Start()
 	{
 		CurrentHp = MaxHp;
+
 		CharacterInfo = GetComponentInChildren<CharaterInfoText>();
 		ParentParty = GetComponentInParent<Party>();
+
+		Stats = new Dictionary<string, int>();
+		StatsInfoRenderer = GetComponentInChildren<StatsRenderer>();
+		UpdateStatsInfoText();
 	}
 
 	// Item calls this to equip item and use its perks
@@ -47,6 +55,8 @@ public class Character : MonoBehaviour
             item.gameObject.transform.SetParent(CharacterItemSlot.transform, false);
             item.AddStats(this);
         }
+
+		UpdateStatsInfoText();
 	}
 
 	// Add character boost attack stat to ongoing attack
@@ -130,6 +140,21 @@ public class Character : MonoBehaviour
         item.gameObject.transform.SetParent(CharacterItemSlot.transform, false);
         item.AddStats(this);
     }
+
+	private void UpdateStatsInfoText()
+	{
+		Stats.Clear();
+
+		Stats.Add("Melee Damage", MeleeDamage);
+		Stats.Add("Range Damage", RangeDamage);
+		Stats.Add("Magic Damage", MagicDamage);
+
+		Stats.Add("Melee Defence", MeleeDefence);
+		Stats.Add("Range Defence", RangeDefence);
+		Stats.Add("Magic Defence", MagicDefence);
+
+		StatsInfoRenderer.UpdateStatsInfo(Stats);
+	}
 }
 
 // These are types of stats this game uses
