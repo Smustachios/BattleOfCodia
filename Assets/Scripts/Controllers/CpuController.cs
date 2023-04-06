@@ -10,11 +10,12 @@ public class CpuController : Controller
 
 		if (IsControllersTurn) 
 		{
+			IsControllersTurn = false;
 			StartCoroutine(ChooseAction());
 		}
 
 		Debug.Log("Monster controller off");
-		IsControllersTurn = false;
+		
 	}
 
 	// Choose random character to attack and always use special attack if you can

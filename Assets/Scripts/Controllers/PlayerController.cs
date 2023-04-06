@@ -37,9 +37,10 @@ public class PlayerController : Controller
 					// Can only be invoked if cooldown is 0
 					if (ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
 					{
-						Debug.Log("Conroller off");
+						IsControllersTurn = false;
+						Debug.Log("Conroller off from special attack");
 						rayHit.transform.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter);
-                        IsControllersTurn = false;
+                        
                     }
 					else
 					{
@@ -49,8 +50,10 @@ public class PlayerController : Controller
 				// This is true for other actions
                 else if (rayHit.collider.gameObject.CompareTag("Action"))
 				{
-					rayHit.transform.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter);
 					IsControllersTurn = false;
+					Debug.Log("Conroller off from other action");
+					rayHit.transform.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter);
+					
 				}
             }
 		}
