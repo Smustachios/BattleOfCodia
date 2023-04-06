@@ -6,13 +6,15 @@ public class SpecialAttackButton : MonoBehaviour, IAction
     private bool _enemyChosen;
     private bool _specialAttackChosen;
     private Camera _camera;
+	public SpriteRenderer Frame;
 
     // If player clicks on attack button in game, start waiting for player to click
     // on enemy it wants to attack
-    public void InvokeAction()
+    public void InvokeAction(Character character)
     {
         GetEnemy();
-    }
+		Frame.color = Color.green;
+	}
 
     // Change condition of enemy chosen to false to start waiting for update for
     // player clicks on enemy characters
@@ -20,6 +22,7 @@ public class SpecialAttackButton : MonoBehaviour, IAction
     {
         _enemyChosen = false;
         _specialAttackChosen = true;
+
     }
 
     // If player has clicked on chosen enemy start attacking it
@@ -44,11 +47,15 @@ public class SpecialAttackButton : MonoBehaviour, IAction
                 {
                     // Get enemy character and attack it
                     Character enemy = rayHit.transform.GetComponent<Character>();
+
                     _enemyChosen = true;
                     _specialAttackChosen = false;
-                    AttackEnemy(enemy);
+
+					Frame.color = Color.white;
+
+					AttackEnemy(enemy);
                 }
-            }
+			}
         }
     }
 

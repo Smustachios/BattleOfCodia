@@ -4,10 +4,12 @@ public class ItemButton : MonoBehaviour, IAction
 {
     private bool _itemSelected = false;
     private Camera _camera;
+	public SpriteRenderer Frame;
 
-    public void InvokeAction()
+	public void InvokeAction(Character character)
     {
         GetItem();
+		Frame.color = Color.green;
     }
 
     private void GetItem()
@@ -25,7 +27,8 @@ public class ItemButton : MonoBehaviour, IAction
             {
                 if (rayHit.collider.gameObject.CompareTag("Item"))
                 {
-                    rayHit.collider.GetComponent<IItem>().UseItem();
+                    //rayHit.collider.GetComponent<IItem>().UseItem();
+					Frame.color = Color.white;
                     _itemSelected = true;
                 }
             }

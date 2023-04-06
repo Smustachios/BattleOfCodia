@@ -13,6 +13,7 @@ public class CpuController : Controller
 			StartCoroutine(ChooseAction());
 		}
 
+		Debug.Log("Monster controller off");
 		IsControllersTurn = false;
 	}
 
@@ -28,21 +29,21 @@ public class CpuController : Controller
 		{
 			IItem food = backpack.Foods[Random.Range(0, backpack.Foods.Count)].GetComponent<IItem>();
 
-			food.UseItem();
+			food.UseItem(character);
 			food.DestroyItem();
 		}
 		else if (backpack.Weapons.Count != 0 && Random.value > 0.75f && backpack.Weapons.Count > 0 && character.EquipedItem == null)
 		{
 			IItem weapon = backpack.Weapons[Random.Range(0, backpack.Weapons.Count)].GetComponent<IItem>();
 
-			weapon.UseItem();
+			weapon.UseItem(character);
         }
 
 		else if (backpack.Gear.Count != 0 && Random.value > 0.75f && backpack.Gear.Count > 0 && character.EquipedItem == null)
 		{
             IItem item = backpack.Gear[Random.Range(0, backpack.Gear.Count)].GetComponent<IItem>();
 
-            item.UseItem();
+            item.UseItem(character);
         }
 		else
 		{

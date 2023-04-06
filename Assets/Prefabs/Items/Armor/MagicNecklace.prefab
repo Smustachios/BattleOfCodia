@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8908840349888772564}
   m_Layer: 0
   m_Name: MagicNecklace
-  m_TagString: Item
+  m_TagString: Action
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,6 +143,10 @@ PrefabInstance:
     - target: {fileID: 6054300038595093463, guid: d42c1439026de68479ea563e29d664fa, type: 3}
       propertyPath: m_Name
       value: StatsTextRenderer
+      objectReference: {fileID: 0}
+    - target: {fileID: 6054300038595093463, guid: d42c1439026de68479ea563e29d664fa, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 9138654550178906982, guid: d42c1439026de68479ea563e29d664fa, type: 3}
       propertyPath: m_RootOrder

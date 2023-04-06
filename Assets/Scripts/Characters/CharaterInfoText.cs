@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class CharaterInfoText : MonoBehaviour
 {
@@ -19,5 +20,13 @@ public class CharaterInfoText : MonoBehaviour
 	public void UpdateHPText(string newHp)
 	{
 		_infoTexts[0].text = $"{newHp}/{_parent.MaxHp}";
+	}
+
+	public IEnumerator UpdateHpChangeText(int value, Color color)
+	{
+		_infoTexts[2].color = color;
+		_infoTexts[2].text = value.ToString();
+		yield return new WaitForSeconds(1);
+		_infoTexts[2].text = null;
 	}
 }

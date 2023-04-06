@@ -4,13 +4,12 @@ using TMPro;
 public class AttackButtons : MonoBehaviour
 {
 	private SpriteRenderer[] _attackSprites; // All attack botton renderer components
-	private TextMeshPro _specialAttackCooldown; // This shows special attack cooldown as text in the scene
+	[SerializeField] private TextMeshPro _specialAttackCooldown; // This shows special attack cooldown as text in the scene
 	public StatsRenderer[] StatsRenderers { get; private set; }
 
 	private void Awake()
 	{
 		_attackSprites = new SpriteRenderer[2];
-		_specialAttackCooldown = GetComponentInChildren<TextMeshPro>();
 
 		Transform attack = transform.Find("BasicAttack");
 		Transform specialAttack = transform.Find("SpecialAttack");
@@ -36,8 +35,19 @@ public class AttackButtons : MonoBehaviour
 	// character specific sprites and update cooldown text
 	public void UpdateAttackButtons(Sprite basicAttack, Sprite specialAttack, int specialAttackCooldown)
 	{
-		_attackSprites[0].sprite = specialAttack;
-		_attackSprites[1].sprite = basicAttack;
-		_specialAttackCooldown.text = specialAttackCooldown.ToString();
+		_attackSprites[0].sprite = basicAttack;
+		_attackSprites[1].sprite = specialAttack;
+
+		if (specialAttackCooldown == 0) 
+		{
+			_attackSprites[1].color = Color.white;
+			_specialAttackCooldown.text = null;
+		}
+		else
+		{
+			ColorUtility.TryParseHtmlString("#463D3D", out Color color);
+			_attackSprites[1].color = color;
+			_specialAttackCooldown.text = specialAttackCooldown.ToString();
+		}
 	}
 }

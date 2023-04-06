@@ -21,6 +21,7 @@ public class Attack : AttackBase
 
 		GameManager.UpdateBattleLog.Invoke($"{Attacker.name} did {attackDamage} damage to {target.name}");
 		target.CharacterInfo.UpdateHPText(target.CurrentHp.ToString());
+		StartCoroutine(target.CharacterInfo.UpdateHpChangeText(attackDamage, Color.red));
 
 		FinishAttack();
 	}

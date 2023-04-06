@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Food : MonoBehaviour, IItem, IStatsRenderer
 {
@@ -9,13 +10,20 @@ public class Food : MonoBehaviour, IItem, IStatsRenderer
 	public Dictionary<string, int> Stats { get; private set; }
 	public StatsRenderer StatsInfoRenderer { get; private set; }
 
-    // Use item and finish turn with active character
-    public void UseItem()
-    {
-        _backpack.Owner.ActiveCharacter.ConsumeFood(this);
-        GameManager.UpdateBattleLog.Invoke($"{_backpack.Owner.ActiveCharacter.Name} healed {HpRegen} Hp!");
-        _backpack.Owner.ResetCharacterFrameColor();
+	public void InvokeAction(Character character)
+	{
+		UseItem(character);
+		DestroyItem();
+		Debug.Log("invoked food");
+		_backpack.Owner.ResetCharacterFrameColor();
 		_backpack.Owner.TakeCharacterAction();
+	}
+
+    // Use item and finish turn with active character
+    public void UseItem(Character character)
+    {
+        character.ConsumeFood(this);
+        GameManager.UpdateBattleLog.Invoke($"{character.Name} healed {HpRegen} Hp!");
     }
 
     // Destroy and remove item from backpack
