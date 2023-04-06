@@ -1,6 +1,6 @@
-public interface IItem
+public interface IItem : IAction
 {
-	public void UseItem();
+	public void UseItem(Character character);
 	public void DestroyItem();
 	public ItemType ReturnItemType();
 }

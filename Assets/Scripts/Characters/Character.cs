@@ -107,6 +107,7 @@ public class Character : MonoBehaviour, IStatsRenderer
 		}
 
 		CharacterInfo.UpdateHPText(CurrentHp.ToString());
+		StartCoroutine(CharacterInfo.UpdateHpChangeText(food.HpRegen, Color.green));
 	}
 
 	// Reset hp to max hp
