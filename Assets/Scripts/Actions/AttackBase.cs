@@ -25,7 +25,6 @@ public class AttackBase : MonoBehaviour
 	protected virtual void FinishAttack(Controller controller)
 	{
 		controller.IsControllersTurn = false;
-		Attacker.ParentParty.ResetCharacterFrameColor();
 		Attacker.ParentParty.CheckPartyStatus();
 	}
 }

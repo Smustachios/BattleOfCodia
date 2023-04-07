@@ -38,8 +38,10 @@ public class Party : MonoBehaviour
 		GameManager.UpdateBattleLog.Invoke($"Its {PartyName} turn");
 
 		UpdateCooldowns(); // Decrease cooldowns in the beginning of the turn
-		_activeCharacterTracker = -1;
-		TakeCharacterAction();
+		_activeCharacterTracker = 0;
+        ActiveCharacter = CharacterList[_activeCharacterTracker];
+		UpdateActiveCharacterInfo();
+		PartyController.TurnOnController();
 	}
 
 	// Use this to add characters into this party
@@ -144,6 +146,7 @@ public class Party : MonoBehaviour
         // Make sure not loop out of list and change to new active character
         if (_activeCharacterTracker < CharacterList.Count)
         {
+			ActiveCharacter.CharacterFrame.color = Color.white;
             ActiveCharacter = CharacterList[_activeCharacterTracker];
         }
     }

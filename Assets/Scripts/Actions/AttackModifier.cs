@@ -1,24 +1,25 @@
 using UnityEngine;
 
+/// <summary>
+/// Takes in attackers stats, enemies stats and returns calculated attack damage
+/// </summary>
 public static class AttackModifier
 {
     public static int CalculateDamage(Character attacker, Character defender, AttackBase attack)
 	{
 		int attackDamage = 0;
 
-		// Check if attack will miss
+		// No damage if attack misses
 		if (Random.value < attack.MissChance)
 		{
 			GameManager.UpdateBattleLog.Invoke("Attack missed!");
 			return 0;
 		}
-		// Calculate what damage attack will do
 		else
 		{
-			// Base damage
-			attackDamage += Random.Range(attack.MinBaseDamage, attack.MaxBaseDamage + 1);
+			attackDamage += Random.Range(attack.MinBaseDamage, attack.MaxBaseDamage + 1); // Add base damage
 
-			// Check if attack will be critical
+			// Add crit damage if attack is critical
 			if (attack.CritChance > 0)
 			{
 				if (Random.value < attack.CritChance)
@@ -33,9 +34,10 @@ public static class AttackModifier
 				attackDamage += attacker.BoostAttack(attack.AttackType);
 			}
 
-			// Target will try to take of some damage with type defence
+			// If target has defence against attack type, substrack defence from damage
 			attackDamage -= defender.DefendAttack(attack.AttackType);
 
+			// Cant do negative damage
 			if (attackDamage < 0) 
 			{
 				attackDamage = 0; 

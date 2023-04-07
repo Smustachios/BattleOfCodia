@@ -2,6 +2,10 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
+/// <summary>
+/// Shows character hp and name.
+/// Shows hp change on character if character heals or takes damage 
+/// </summary>
 public class CharaterInfoText : MonoBehaviour
 {
 	private TextMeshPro[] _infoTexts;
