@@ -19,17 +19,17 @@ public class Armor : MonoBehaviour, IItem, IStatsRenderer
 	public StatsRenderer StatsInfoRenderer { get; private set; }
 	public Dictionary<string, int> Stats { get; private set; }
 
-	public void InvokeAction(Character character)
+	public void InvokeAction(Character character, Controller controller)
 	{
-		UseItem(character);
-		Debug.Log("invoked item");
+		UseItem(character, controller);
 
 		_backpack.Owner.ResetCharacterFrameColor();
 		_backpack.Owner.TakeCharacterAction();
 	}
 
-    public void UseItem(Character character)
+    public void UseItem(Character character, Controller controller)
     {
+        controller.IsControllersTurn = false;
 		character.EquipItem(this);
 		GameManager.UpdateBattleLog.Invoke($"{character.Name} equiped {Name}!");
 		_backpack.RemoveItem(this.gameObject);

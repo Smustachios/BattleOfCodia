@@ -1,6 +1,6 @@
 public interface IItem : IAction
 {
-	public void UseItem(Character character);
+	public void UseItem(Character character, Controller controller);
 	public void DestroyItem();
 	public ItemType ReturnItemType();
 }

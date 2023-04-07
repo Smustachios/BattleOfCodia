@@ -10,7 +10,6 @@ public class CpuController : Controller
 
 		if (IsControllersTurn) 
 		{
-			IsControllersTurn = false;
 			StartCoroutine(ChooseAction());
 		}
 		
@@ -28,21 +27,20 @@ public class CpuController : Controller
 		{
 			IItem food = backpack.Foods[Random.Range(0, backpack.Foods.Count)].GetComponent<IItem>();
 
-			food.UseItem(character);
-			food.DestroyItem();
+			food.InvokeAction(character, this);
 		}
 		else if (backpack.Weapons.Count != 0 && Random.value > 0.75f && backpack.Weapons.Count > 0 && character.EquipedItem == null)
 		{
 			IItem weapon = backpack.Weapons[Random.Range(0, backpack.Weapons.Count)].GetComponent<IItem>();
 
-			weapon.UseItem(character);
+			weapon.InvokeAction(character, this);
         }
 
 		else if (backpack.Gear.Count != 0 && Random.value > 0.75f && backpack.Gear.Count > 0 && character.EquipedItem == null)
 		{
             IItem item = backpack.Gear[Random.Range(0, backpack.Gear.Count)].GetComponent<IItem>();
 
-            item.UseItem(character);
+            item.InvokeAction(character, this);
         }
 		else
 		{
@@ -50,11 +48,11 @@ public class CpuController : Controller
 
             if (ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
             {
-                ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().StartAttack(enemy);
+                ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().StartAttack(enemy, this);
             }
             else
             {
-                ControlledParty.ActiveCharacter.GetComponent<Attack>().StartAttack(enemy);
+                ControlledParty.ActiveCharacter.GetComponent<Attack>().StartAttack(enemy, this);
             }
         }
 	}

@@ -14,9 +14,7 @@ public class PlayerController : Controller
 	// player to start giving mouse inputs (choose some action to do)
 	public override void TurnOnController()
 	{
-		Debug.Log("Controller on");
 		IsControllersTurn = true;
-		Debug.Log(IsControllersTurn);
 	}
 
 	private void Update()
@@ -37,9 +35,7 @@ public class PlayerController : Controller
 					// Can only be invoked if cooldown is 0
 					if (ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
 					{
-						IsControllersTurn = false;
-						Debug.Log("Conroller off from special attack");
-						rayHit.transform.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter);
+						rayHit.transform.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter, this);
                         
                     }
 					else
@@ -50,9 +46,7 @@ public class PlayerController : Controller
 				// This is true for other actions
                 else if (rayHit.collider.gameObject.CompareTag("Action"))
 				{
-					IsControllersTurn = false;
-					Debug.Log("Conroller off from other action");
-					rayHit.transform.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter);
+					rayHit.transform.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter, this);
 					
 				}
             }

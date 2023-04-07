@@ -3,6 +3,7 @@ using UnityEngine;
 public class SpecialAttackButton : MonoBehaviour, IAction
 {
     public Battle CurrentBattle { get; private set; }
+    private Controller _controller;
     private bool _enemyChosen;
     private bool _specialAttackChosen;
     private Camera _camera;
@@ -10,8 +11,9 @@ public class SpecialAttackButton : MonoBehaviour, IAction
 
     // If player clicks on attack button in game, start waiting for player to click
     // on enemy it wants to attack
-    public void InvokeAction(Character character)
+    public void InvokeAction(Character character, Controller controller)
     {
+        _controller = controller;
         GetEnemy();
 		Frame.color = Color.green;
 	}
@@ -26,9 +28,9 @@ public class SpecialAttackButton : MonoBehaviour, IAction
     }
 
     // If player has clicked on chosen enemy start attacking it
-    private void AttackEnemy(Character enemy)
+    private void AttackEnemy(Character enemy, Controller controller)
     {
-        CurrentBattle.ActiveParty.ActiveCharacter.GetComponent<SpecialAttack>().StartAttack(enemy);
+        CurrentBattle.ActiveParty.ActiveCharacter.GetComponent<SpecialAttack>().StartAttack(enemy, controller);
     }
 
     private void Update()
@@ -53,7 +55,7 @@ public class SpecialAttackButton : MonoBehaviour, IAction
 
 					Frame.color = Color.white;
 
-					AttackEnemy(enemy);
+					AttackEnemy(enemy, _controller);
                 }
 			}
         }

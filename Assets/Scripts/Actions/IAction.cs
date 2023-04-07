@@ -3,5 +3,5 @@
 public interface IAction
 {
 	// Every action has its own way of invoking its logic
-	public void InvokeAction(Character character);
+	public void InvokeAction(Character character, Controller controller);
 }

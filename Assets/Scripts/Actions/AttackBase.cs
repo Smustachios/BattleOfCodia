@@ -14,7 +14,7 @@ public class AttackBase : MonoBehaviour
 	public int MinCritBonus;
 	public int MaxCritBonus;
 
-	public virtual void StartAttack(Character target) { }
+	public virtual void StartAttack(Character target, Controller controller) { }
 	protected virtual void InflictDamage(Character enemy, int damage)
 	{
 		enemy.TakeDamage(damage);

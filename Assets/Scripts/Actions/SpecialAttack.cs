@@ -17,8 +17,9 @@ public class SpecialAttack : AttackBase
 
     // Calculate and then inflick damage to enemy character
     // Then finish character turn and move onto next character
-    public override void StartAttack(Character target)
+    public override void StartAttack(Character target, Controller controller)
     {
+		controller.IsControllersTurn = false;
         int attackDamage = AttackModifier.CalculateDamage(Attacker, target, this);
         InflictDamage(target, attackDamage);
 
