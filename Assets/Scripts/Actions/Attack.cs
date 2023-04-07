@@ -1,35 +1,32 @@
 using System.Collections.Generic;
-using UnityEngine;
 
+/// <summary>
+/// Basic attack of a character. Has stats and can attack.
+/// If attack is finished, character finishes its turn.
+/// </summary>
 public class Attack : AttackBase
 {
-	public StatsRenderer StatsInfoRenderer { get; private set; }
-	public Dictionary<string, int> Stats { get; private set; }
-
 	private void Awake()
 	{
-		// This is the character who can use this attack
 		Attacker = GetComponent<Character>();
 	}
 
-	// Calculate and then inflick damage to enemy character
-	// Then finish character turn and move onto next character
-	public override void StartAttack(Character target, Controller controller)
+	// Get damage amount from attack modifier and then deal damage to enemy.
+	// Then finish character turn
+	public override void AttackTarget(Character target, Controller controller)
 	{
-		controller.IsControllersTurn = false;
-		int attackDamage = AttackModifier.CalculateDamage(Attacker, target, this); // Considers all the stats to calculate damage
-		InflictDamage(target, attackDamage);
+		int attackDamage = AttackModifier.CalculateDamage(Attacker, target, this);
+		target.TakeDamage(attackDamage);
 
-		GameManager.UpdateBattleLog.Invoke($"{Attacker.name} did {attackDamage} damage to {target.name}");
-		target.CharacterInfo.UpdateHPText(target.CurrentHp.ToString());
-		StartCoroutine(target.CharacterInfo.UpdateHpChangeText(attackDamage, Color.red));
+		GameManager.UpdateBattleLog.Invoke($"{Attacker.Name} did {attackDamage} damage to {target.Name}");
 
-		FinishAttack();
+        FinishAttack(controller);
 	}
 
-	public void UpdateStatsInfoText(StatsRenderer info)
+	// Returns stats dictionary to caller
+	public Dictionary<string, int> GetAttackStats()
 	{
-		Stats = new Dictionary<string, int>
+		return new Dictionary<string, int>
 		{
 			{ "Min Dmg", MinBaseDamage },
 			{ "Max Dmg", MaxBaseDamage },
@@ -38,7 +35,5 @@ public class Attack : AttackBase
 			{ "Min Crit", MinCritBonus },
 			{ "Max Crit", MaxCritBonus }
 		};
-
-		info.UpdateStatsInfo(Stats);
 	}
 }

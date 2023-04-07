@@ -70,7 +70,6 @@
     <Compile Include="Assets/Scripts/Actions/AttackButton.cs" />
     <Compile Include="Assets/Scripts/Characters/Character.cs" />
     <Compile Include="Assets/Scripts/Items/Food.cs" />
-    <Compile Include="Assets/Scripts/Characters/ShowCharacterStats.cs" />
     <Compile Include="Assets/Scripts/Items/Armor.cs" />
     <Compile Include="Assets/Scripts/Game/Party.cs" />
     <Compile Include="Assets/Scripts/Characters/CharaterInfoText.cs" />

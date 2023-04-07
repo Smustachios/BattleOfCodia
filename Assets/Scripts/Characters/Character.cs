@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Character : MonoBehaviour, IStatsRenderer
 {
@@ -96,7 +97,10 @@ public class Character : MonoBehaviour, IStatsRenderer
 		{
 			KillCharacter();
 		}
-	}
+
+		CharacterInfo.UpdateHPText(CurrentHp.ToString());
+        StartCoroutine(CharacterInfo.UpdateHpChangeText(damage, Color.red));
+    }
 
 	// Add healt from food
 	public void ConsumeFood(Food food) 

@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Base for all attacks.
+/// Has basic stats, attack and finish attack mehtods.
+/// </summary>
 public class AttackBase : MonoBehaviour
 {
 	public CharacterType AttackType;
@@ -14,16 +18,14 @@ public class AttackBase : MonoBehaviour
 	public int MinCritBonus;
 	public int MaxCritBonus;
 
-	public virtual void StartAttack(Character target, Controller controller) { }
-	protected virtual void InflictDamage(Character enemy, int damage)
-	{
-		enemy.TakeDamage(damage);
-	}
+
+	public virtual void AttackTarget(Character target, Controller controller) { }
 
 	// Check if this attack killed last character in the enemy party, if true move into next level
-	protected virtual void FinishAttack()
+	protected virtual void FinishAttack(Controller controller)
 	{
-		Attacker.ParentParty.ResetCharacterFrameColor(); // Before change to next character, change active character frame back to default color
+		controller.IsControllersTurn = false;
+		Attacker.ParentParty.ResetCharacterFrameColor();
 		Attacker.ParentParty.CheckPartyStatus();
 	}
 }

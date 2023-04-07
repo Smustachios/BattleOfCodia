@@ -1,69 +1,68 @@
 using UnityEngine;
 
+/// <summary>
+/// Invokes special attack button sequence. If player clicks on enemy after sequence start
+/// starts attacking enemy. If player clicks somewhere else then sequence will canceled.
+/// </summary>
 public class SpecialAttackButton : MonoBehaviour, IAction
 {
-    public Battle CurrentBattle { get; private set; }
+    public SpriteRenderer Frame;
+
+    private Camera _camera;
     private Controller _controller;
+
     private bool _enemyChosen;
     private bool _specialAttackChosen;
-    private Camera _camera;
-	public SpriteRenderer Frame;
 
-    // If player clicks on attack button in game, start waiting for player to click
-    // on enemy it wants to attack
+
+    private void Awake()
+    {
+        _camera = Camera.main;
+    }
+
+    // Start sequence
     public void InvokeAction(Character character, Controller controller)
     {
         _controller = controller;
-        GetEnemy();
-		Frame.color = Color.green;
-	}
 
-    // Change condition of enemy chosen to false to start waiting for update for
-    // player clicks on enemy characters
-    private void GetEnemy()
-    {
         _enemyChosen = false;
         _specialAttackChosen = true;
+        Frame.color = Color.green; // Turn attack button to active color
+    }
 
+    // Wait for player to click something
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0) && !_enemyChosen && _specialAttackChosen)
+        {
+            RaycastHit2D clickedObject = Physics2D.GetRayIntersection(_camera.ScreenPointToRay(Input.mousePosition));
+
+            if (clickedObject.collider != null)
+            {
+                // Clicked on enemy
+                if (clickedObject.collider.CompareTag("Character") &&
+                    clickedObject.collider.GetComponent<Character>().ParentParty != _controller.ControlledParty)
+                {
+                    _enemyChosen = true;
+                    _specialAttackChosen = false;
+                    Frame.color = Color.white; // Turn attack button to inactive color
+
+                    AttackEnemy(clickedObject.collider.GetComponent<Character>(), _controller);
+                }
+                // Cancel sequence
+                else
+                {
+                    _enemyChosen = false;
+                    _specialAttackChosen = false;
+                    Frame.color = Color.white; // Turn attack button to inactive color
+                }
+            }
+        }
     }
 
     // If player has clicked on chosen enemy start attacking it
     private void AttackEnemy(Character enemy, Controller controller)
     {
-        CurrentBattle.ActiveParty.ActiveCharacter.GetComponent<SpecialAttack>().StartAttack(enemy, controller);
-    }
-
-    private void Update()
-    {
-        // Look for clicks on enemy characters while attack action is ongoing
-        if (Input.GetMouseButtonDown(0) && !_enemyChosen && _specialAttackChosen)
-        {
-            RaycastHit2D rayHit = Physics2D.GetRayIntersection(_camera.ScreenPointToRay(Input.mousePosition));
-
-            if (rayHit.collider != null)
-            {
-                // You can choose your own characters as targets too! Because some characters
-                // might need to heal own party members, its a must. But that also means you can attack
-                // yourself or your party members.. 
-                if (rayHit.collider.gameObject.CompareTag("Character"))
-                {
-                    // Get enemy character and attack it
-                    Character enemy = rayHit.transform.GetComponent<Character>();
-
-                    _enemyChosen = true;
-                    _specialAttackChosen = false;
-
-					Frame.color = Color.white;
-
-					AttackEnemy(enemy, _controller);
-                }
-			}
-        }
-    }
-
-    private void Awake()
-    {
-        CurrentBattle = GameObject.Find("GameManager").GetComponent<Battle>();
-        _camera = Camera.main;
+        _controller.ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().AttackTarget(enemy, controller);
     }
 }

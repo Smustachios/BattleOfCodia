@@ -46,6 +46,8 @@ public class Battle : MonoBehaviour
         {
             ActiveParty = HeroParty;
         }
+
+		TakePartyTurn();
     }
 
     // This method will be called once party brodcasts its ending turn event

@@ -48,11 +48,11 @@ public class CpuController : Controller
 
             if (ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
             {
-                ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().StartAttack(enemy, this);
+                ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().AttackTarget(enemy, this);
             }
             else
             {
-                ControlledParty.ActiveCharacter.GetComponent<Attack>().StartAttack(enemy, this);
+                ControlledParty.ActiveCharacter.GetComponent<Attack>().AttackTarget(enemy, this);
             }
         }
 	}

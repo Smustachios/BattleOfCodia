@@ -1,68 +1,65 @@
 using UnityEngine;
 
+/// <summary>
+/// Invokes attack button sequence. If player clicks on enemy after sequence start
+/// starts attacking enemy. If player clicks somewhere else then sequence will canceled.
+/// </summary>
 public class AttackButton : MonoBehaviour, IAction
 {
-	public Battle CurrentBattle { get; private set; }
+    public SpriteRenderer Frame;
+
     private Controller _controller;
-	private bool _enemyChosen;
-    private bool _attackChosen;
     private Camera _camera;
-	public SpriteRenderer Frame;
 
-    // If player clicks on attack button in game, start waiting for player to click
-    // on enemy it wants to attack
-	public void InvokeAction(Character character, Controller controller)
-	{
-        _controller = controller;
-        GetEnemy();
-		Frame.color = Color.green;
-	}
+    private bool _enemyChosen;
+    private bool _attackChosen;
 
-    // Change condition of enemy chosen to false to start waiting for update for
-    // player to choose target enemy
-	private void GetEnemy()
-	{
-		_enemyChosen = false;
-        _attackChosen = true;
-	}
 
-    // If player has clicked on chosen enemy start attacking it
-    private void AttackEnemy(Character enemy, Controller controller)
+    private void Awake()
     {
-        CurrentBattle.ActiveParty.ActiveCharacter.GetComponent<Attack>().StartAttack(enemy, controller);
+        _camera = Camera.main;
     }
 
+    // Start sequence
+    public void InvokeAction(Character character, Controller controller)
+	{
+        _controller = controller;
+
+        _enemyChosen = false;
+        _attackChosen = true;
+		Frame.color = Color.green; // Turn attack button to active color
+	}
+
+    // Wait for player to click something
     private void Update()
     {
-        // Look for clicks on enemy characters while attack action is ongoing
         if (Input.GetMouseButtonDown(0) && !_enemyChosen && _attackChosen)
         {
-            RaycastHit2D rayHit = Physics2D.GetRayIntersection(_camera.ScreenPointToRay(Input.mousePosition));
+            RaycastHit2D clickedObject = Physics2D.GetRayIntersection(_camera.ScreenPointToRay(Input.mousePosition));
 
-            if (rayHit.collider != null)
+            if (clickedObject.collider != null)
             {
-                // You can choose your own characters as targets too! Because some characters
-                // might need to heal own party members, its a must. But that also means you can attack
-                // yourself or your party members.. 
-                if (rayHit.collider.gameObject.CompareTag("Character"))
+                if (clickedObject.collider.CompareTag("Character") &&
+                    clickedObject.collider.GetComponent<Character>().ParentParty != _controller.ControlledParty)
                 {
-                    // Get enemy character player clicked on and attack it
-                    Character enemy = rayHit.transform.GetComponent<Character>();
-
                     _enemyChosen = true;
                     _attackChosen = false;
+					Frame.color = Color.white; // Turn attack button to inactive color
 
-					Frame.color = Color.white;
-
-					AttackEnemy(enemy, _controller);
+                    AttackEnemy(clickedObject.collider.GetComponent<Character>(), _controller);
+                }
+                else
+                {
+                    _enemyChosen = false;
+                    _attackChosen = false;
+                    Frame.color = Color.white; // Turn attack button to inactive color
                 }
 			}
         }
     }
 
-    private void Awake()
-	{
-		CurrentBattle = GameObject.Find("GameManager").GetComponent<Battle>();
-        _camera = Camera.main;
-	}
+    private void AttackEnemy(Character enemy, Controller controller)
+    {
+        _controller.ControlledParty.ActiveCharacter.GetComponent<Attack>().AttackTarget(enemy, controller);
+    }
 }

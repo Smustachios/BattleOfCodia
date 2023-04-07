@@ -118,16 +118,8 @@ public class Party : MonoBehaviour
 		else
 		{
 			ChangeActiveCharacter();
-
-			// Update "UI" info for new active character
-			AttackButtons.UpdateAttackButtons(ActiveCharacter.BasicAttack, ActiveCharacter.SpecialAttack, 
-				ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown);
-			ActiveCharacter.CharacterFrame.color = Color.green;
-
-			ActiveCharacter.GetComponent<SpecialAttack>().UpdateStatsInfoText(AttackButtons.StatsRenderers[1]);
-			ActiveCharacter.GetComponent<Attack>().UpdateStatsInfoText(AttackButtons.StatsRenderers[0]);
-
-			GameManager.UpdateBattleLog.Invoke($"Its {ActiveCharacter.Name} turn!");
+			UpdateActiveCharacterInfo();
+			
             PartyController.TurnOnController();
 		}
 	}
@@ -156,6 +148,18 @@ public class Party : MonoBehaviour
         }
     }
 
+	private void UpdateActiveCharacterInfo()
+	{
+        AttackButtons.UpdateAttackButtons(ActiveCharacter.BasicAttack, ActiveCharacter.SpecialAttack,
+            ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown,
+            ActiveCharacter.GetComponent<Attack>().GetAttackStats(),
+            ActiveCharacter.GetComponent<SpecialAttack>().UpdateStatsInfoText());
+
+        ActiveCharacter.CharacterFrame.color = Color.green;
+
+        GameManager.UpdateBattleLog.Invoke($"Its {ActiveCharacter.Name} turn!");
+    }
+
 	// If special attack is ready skip, else substrack 1 from cooldown
     private void UpdateCooldowns()
 	{
@@ -181,7 +185,7 @@ public class Party : MonoBehaviour
     // Tell battle this party has finished its turn and to change to other party
     private void FinishPartyTurn()
     {
+		ResetCharacterFrameColor();
 		_currentBattle.ChangeToNextParty(this);
-		_currentBattle.TakePartyTurn();
     }
 }
