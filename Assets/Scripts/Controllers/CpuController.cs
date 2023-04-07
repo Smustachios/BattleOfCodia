@@ -13,8 +13,6 @@ public class CpuController : Controller
 			IsControllersTurn = false;
 			StartCoroutine(ChooseAction());
 		}
-
-		Debug.Log("Monster controller off");
 		
 	}
 
