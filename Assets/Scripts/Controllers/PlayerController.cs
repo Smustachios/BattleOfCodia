@@ -30,25 +30,28 @@ public class PlayerController : Controller
 				GameObject hittedObject = rayHit.collider.gameObject;
 
 				// This is true if player chooses special attack
-                if (hittedObject.CompareTag("Action") && hittedObject.GetComponent<SpecialAttackButton>() != null)
+                if (hittedObject.CompareTag("Action"))
                 {
-					// Can only be invoked if cooldown is 0
-					if (ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
+					if (hittedObject.GetComponent<AttackButton>() != null)
 					{
-						rayHit.transform.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter, this);
-                        
+						hittedObject.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter, this);
+					}
+					else if (hittedObject.GetComponent<SpecialAttackButton>() != null)
+					{
+                        if (ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
+                        {
+                            hittedObject.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter, this);
+                        }
                     }
-					else
+					else if (hittedObject.GetComponent<IItem>() != null)
 					{
-						return;
+						if (hittedObject.GetComponent<IItem>().Backpack == ControlledParty.Backpack &&
+							hittedObject.GetComponent<IItem>().IsInBackpack)
+						{
+							hittedObject.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter, this);
+						}
 					}
                 }
-				// This is true for other actions
-                else if (rayHit.collider.gameObject.CompareTag("Action"))
-				{
-					rayHit.transform.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter, this);
-					
-				}
             }
 		}
 	}

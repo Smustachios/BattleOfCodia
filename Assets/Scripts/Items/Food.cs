@@ -5,16 +5,20 @@ public class Food : MonoBehaviour, IItem, IStatsRenderer
 {
     public ItemType Type;
     public int HpRegen = 5;
-    private Backpack _backpack;
-	public Dictionary<string, int> Stats { get; private set; }
+
+    public Backpack Backpack { get; private set; }
+    public bool IsInBackpack { get; private set; }
+
+    public Dictionary<string, int> Stats { get; private set; }
 	public StatsRenderer StatsInfoRenderer { get; private set; }
+
 
 	public void InvokeAction(Character character, Controller controller)
 	{
 		UseItem(character, controller);
 		DestroyItem();
-		_backpack.Owner.ResetCharacterFrameColor();
-		_backpack.Owner.TakeCharacterAction();
+		Backpack.Owner.ResetCharacterFrameColor();
+		Backpack.Owner.TakeCharacterAction();
 	}
 
     // Use item and finish turn with active character
@@ -29,7 +33,7 @@ public class Food : MonoBehaviour, IItem, IStatsRenderer
     public void DestroyItem()
     {
         Destroy(gameObject);
-        _backpack.RemoveItem(gameObject);
+        Backpack.RemoveItem(gameObject);
     }
 
     public ItemType ReturnItemType()
@@ -39,9 +43,10 @@ public class Food : MonoBehaviour, IItem, IStatsRenderer
 
     private void Awake()
     {
-        _backpack = GetComponentInParent<Backpack>();
+        Backpack = GetComponentInParent<Backpack>();
 		Stats = new Dictionary<string, int>();
 		StatsInfoRenderer = GetComponentInChildren<StatsRenderer>();
+        IsInBackpack = true;
     }
 
 	private void Start()

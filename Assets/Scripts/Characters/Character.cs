@@ -45,6 +45,8 @@ public class Character : MonoBehaviour, IStatsRenderer
 	// Item calls this to equip item and use its perks
 	public void EquipItem(Armor item)
 	{
+		item.RemoveFromBackpack();
+
 		if (EquipedItem != null)
 		{
 			SwapItem(item);

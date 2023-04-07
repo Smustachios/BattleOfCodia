@@ -14,7 +14,8 @@ public class Armor : MonoBehaviour, IItem, IStatsRenderer
     public int RangeDefenceBonus;
     public int MagicDefenceBonus;
 
-    private Backpack _backpack;
+    public Backpack Backpack { get; private set; }
+    public bool IsInBackpack { get; private set; }
 
 	public StatsRenderer StatsInfoRenderer { get; private set; }
 	public Dictionary<string, int> Stats { get; private set; }
@@ -23,8 +24,8 @@ public class Armor : MonoBehaviour, IItem, IStatsRenderer
 	{
 		UseItem(character, controller);
 
-		_backpack.Owner.ResetCharacterFrameColor();
-		_backpack.Owner.TakeCharacterAction();
+		Backpack.Owner.ResetCharacterFrameColor();
+		Backpack.Owner.TakeCharacterAction();
 	}
 
     public void UseItem(Character character, Controller controller)
@@ -32,7 +33,7 @@ public class Armor : MonoBehaviour, IItem, IStatsRenderer
         controller.IsControllersTurn = false;
 		character.EquipItem(this);
 		GameManager.UpdateBattleLog.Invoke($"{character.Name} equiped {Name}!");
-		_backpack.RemoveItem(this.gameObject);
+		Backpack.RemoveItem(this.gameObject);
 	}
 
     public ItemType ReturnItemType()
@@ -80,14 +81,20 @@ public class Armor : MonoBehaviour, IItem, IStatsRenderer
 		StatsInfoRenderer.UpdateStatsInfo(Stats);
 	}
 
-	private void Awake()
+    public void RemoveFromBackpack()
     {
-        _backpack = GetComponentInParent<Backpack>();
-		StatsInfoRenderer = GetComponentInChildren<StatsRenderer>();
-		Stats = new Dictionary<string, int>();
-	}
+        IsInBackpack = false;
+    }
 
-	private void Start()
+    private void Awake()
+    {
+        Backpack = GetComponentInParent<Backpack>();
+        StatsInfoRenderer = GetComponentInChildren<StatsRenderer>();
+        Stats = new Dictionary<string, int>();
+        IsInBackpack = true;
+    }
+
+    private void Start()
 	{
 		UpdateStatsInfoText();
 	}
