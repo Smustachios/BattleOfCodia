@@ -41,7 +41,7 @@ public class Party : MonoBehaviour
 		_activeCharacterTracker = 0;
         ActiveCharacter = CharacterList[_activeCharacterTracker];
 		UpdateActiveCharacterInfo();
-		PartyController.TurnOnController();
+		PartyController.TurnOnController(ActiveCharacter);
 	}
 
 	// Use this to add characters into this party
@@ -122,7 +122,7 @@ public class Party : MonoBehaviour
 			ChangeActiveCharacter();
 			UpdateActiveCharacterInfo();
 			
-            PartyController.TurnOnController();
+            PartyController.TurnOnController(ActiveCharacter);
 		}
 	}
 

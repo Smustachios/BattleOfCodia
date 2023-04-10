@@ -81,9 +81,9 @@ public class Character : MonoBehaviour
             CurrentHp = MaxHp;
         }
 
-        CharacterInfo.UpdateHPText(CurrentHp.ToString());
-        StartCoroutine(CharacterInfo.UpdateHpChangeText(food.HpRegen, Color.green));
-    }
+		CharacterInfo.UpdateHpBar();
+		StartCoroutine(CharacterInfo.ShowHpChange(food.HpRegen, Color.green));
+	}
 
     // Take damage from enemy attack
     public void TakeDamage(int damage)
@@ -97,18 +97,18 @@ public class Character : MonoBehaviour
             KillCharacter();
         }
 
-        CharacterInfo.UpdateHPText(CurrentHp.ToString());
-        StartCoroutine(CharacterInfo.UpdateHpChangeText(damage, Color.red));
+		CharacterInfo.UpdateHpBar();
+        StartCoroutine(CharacterInfo.ShowHpChange(damage, Color.red));
     }
 
     // Reset hp to max hp
     public void ResetHp()
     {
         CurrentHp = MaxHp;
-        CharacterInfo.UpdateHPText(CurrentHp.ToString());
+        CharacterInfo.UpdateHpBar();
     }
 
-    // Add character boost attack stat to ongoing attack
+    // Add boost to ongoing attack
     public int BoostAttack(CharacterType attackType)
 	{
 		return attackType switch

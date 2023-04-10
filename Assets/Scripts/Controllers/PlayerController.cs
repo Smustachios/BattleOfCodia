@@ -1,58 +1,85 @@
 using UnityEngine;
 
+/// <summary>
+/// Player controller
+/// </summary>
 public class PlayerController : Controller
 {
 	private Camera _camera;
 
 	private void Awake()
 	{
-		// Get main camera for getting mouse click ray positions
 		_camera = Camera.main;
 	}
 
-	// This method turns on this controller. Then controller and game starts waiting for
-	// player to start giving mouse inputs (choose some action to do)
-	public override void TurnOnController()
+	// Take character action
+	public override void TurnOnController(Character character)
 	{
+		_character = character;
 		IsControllersTurn = true;
 	}
 
 	private void Update()
 	{
-		// If player clicks on some action button, invoke that action and action controls,
-		// then turn of controller to avoid using more than one action at the time
+		// Player chooses action by clicking on button or a item in the backpack
 		if (Input.GetMouseButtonDown(0) && IsControllersTurn)
 		{
 			RaycastHit2D rayHit = Physics2D.GetRayIntersection(_camera.ScreenPointToRay(Input.mousePosition));
 
 			if(rayHit.collider != null) 
 			{
-				GameObject hittedObject = rayHit.collider.gameObject;
+				GameObject clickedObject = rayHit.collider.gameObject;
 
-				// This is true if player chooses special attack
-                if (hittedObject.CompareTag("Action"))
+				if (clickedObject.CompareTag("Action"))
                 {
-					if (hittedObject.GetComponent<AttackButton>() != null)
-					{
-						hittedObject.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter, this);
-					}
-					else if (hittedObject.GetComponent<SpecialAttackButton>() != null)
-					{
-                        if (ControlledParty.ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
-                        {
-                            hittedObject.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter, this);
-                        }
-                    }
-					else if (hittedObject.GetComponent<IItem>() != null)
-					{
-						if (hittedObject.GetComponent<IItem>().Backpack == ControlledParty.Backpack &&
-							hittedObject.GetComponent<IItem>().IsInBackpack)
-						{
-							hittedObject.GetComponent<IAction>().InvokeAction(ControlledParty.ActiveCharacter, this);
-						}
-					}
+					// Check what action player choose and finish with character
+					CheckIfAttack(clickedObject);
+					CheckIfSpecialAttack(clickedObject);
+					CheckIfItem(clickedObject);
                 }
             }
 		}
+	}
+
+	private bool CheckIfAttack(GameObject button)
+	{
+		Debug.Log(1);
+		if (button.GetComponent<AttackButton>() != null)
+		{
+			button.GetComponent<IAction>().InvokeAction(_character, this);
+			return true;
+		}
+		return false;
+	}
+
+	private bool CheckIfSpecialAttack(GameObject button)
+	{
+		Debug.Log(2);
+		if (button.GetComponent<SpecialAttackButton>() != null)
+		{
+			if (_character.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
+			{
+				button.GetComponent<IAction>().InvokeAction(_character, this);
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+
+	private bool CheckIfItem(GameObject button)
+	{
+		Debug.Log(3);
+		if (button.GetComponent<IItem>() != null)
+		{
+			if (button.GetComponent<IItem>().Backpack == ControlledParty.Backpack &&
+				button.GetComponent<IItem>().IsInBackpack)
+			{
+				button.GetComponent<IAction>().InvokeAction(_character, this);
+				return true;
+			}
+			return false;
+		}
+		return false;
 	}
 }

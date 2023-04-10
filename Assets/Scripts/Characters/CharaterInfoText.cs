@@ -11,25 +11,31 @@ public class CharaterInfoText : MonoBehaviour
 	private TextMeshPro[] _infoTexts;
 	private Character _parent;
 
+
 	private void Awake()
 	{
-		_infoTexts = gameObject.GetComponentsInChildren<TextMeshPro>(); // All text components on character object
-		_parent = GetComponentInParent<Character>(); // This is character whos text are to update
+		_infoTexts = gameObject.GetComponentsInChildren<TextMeshPro>();
+		_parent = GetComponentInParent<Character>();
 
-		_infoTexts[1].text = _parent.Name; // Set name text
-		_infoTexts[0].text = $"{_parent.MaxHp}/{_parent.MaxHp}"; // Set inital hp text
 	}
 
-	// Take in updated hp and update hp text box in the game
-	public void UpdateHPText(string newHp)
+	private void Start()
 	{
-		_infoTexts[0].text = $"{newHp}/{_parent.MaxHp}";
+		_infoTexts[1].text = _parent.Name;
+		_infoTexts[0].text = $"{_parent.MaxHp}/{_parent.MaxHp}";
 	}
 
-	public IEnumerator UpdateHpChangeText(int value, Color color)
+	// Update hp bar in the game
+	public void UpdateHpBar()
+	{
+		_infoTexts[0].text = $"{_parent.CurrentHp}/{_parent.MaxHp}";
+	}
+
+	// Show hp change on character sprite for 1 sec. Heal is green, damage is red
+	public IEnumerator ShowHpChange(int hpChange, Color color)
 	{
 		_infoTexts[2].color = color;
-		_infoTexts[2].text = value.ToString();
+		_infoTexts[2].text = hpChange.ToString();
 		yield return new WaitForSeconds(1);
 		_infoTexts[2].text = null;
 	}

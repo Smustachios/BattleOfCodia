@@ -1,10 +1,15 @@
 using UnityEngine;
 
+/// <summary>
+/// Base for controllers
+/// </summary>
 public class Controller : MonoBehaviour
 {
-	public Party ControlledParty; // What party this controller controls
+	public Party ControlledParty;
 	public bool IsControllersTurn = false;
+	protected Character _character;
 
-	// This is called when each character starts its turn in the battle
-	public virtual void TurnOnController() { }
+
+	// Start character turn
+	public virtual void TurnOnController(Character character) { }
 }
