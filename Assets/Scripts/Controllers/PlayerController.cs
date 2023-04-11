@@ -33,9 +33,8 @@ public class PlayerController : Controller
 				if (clickedObject.CompareTag("Action"))
                 {
 					// Check what action player choose and finish with character
-					CheckIfAttack(clickedObject);
-					CheckIfSpecialAttack(clickedObject);
-					CheckIfItem(clickedObject);
+					if (CheckIfAttack(clickedObject) || CheckIfSpecialAttack(clickedObject) || CheckIfItem(clickedObject))
+						return;
                 }
             }
 		}
@@ -43,7 +42,6 @@ public class PlayerController : Controller
 
 	private bool CheckIfAttack(GameObject button)
 	{
-		Debug.Log(1);
 		if (button.GetComponent<AttackButton>() != null)
 		{
 			button.GetComponent<IAction>().InvokeAction(_character, this);
@@ -54,7 +52,6 @@ public class PlayerController : Controller
 
 	private bool CheckIfSpecialAttack(GameObject button)
 	{
-		Debug.Log(2);
 		if (button.GetComponent<SpecialAttackButton>() != null)
 		{
 			if (_character.GetComponent<SpecialAttack>().RemainingCooldown <= 0)
@@ -69,7 +66,6 @@ public class PlayerController : Controller
 
 	private bool CheckIfItem(GameObject button)
 	{
-		Debug.Log(3);
 		if (button.GetComponent<IItem>() != null)
 		{
 			if (button.GetComponent<IItem>().Backpack == ControlledParty.Backpack &&

@@ -1,26 +1,28 @@
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
+/// <summary>
+/// Controls flow of party actions
+/// </summary>
 public class Party : MonoBehaviour
 {
+	public string PartyName;
 	public AttackButtons AttackButtons;
 	public Controller PartyController;
 	public Party EnemyParty;
 	public Backpack Backpack;
+
 	private Battle _currentBattle;
 
 	public Character ActiveCharacter { get; private set; }
-	public List<Character> CharacterList { get; private set; } // All characters who are in the party left
+	public List<Character> CharacterList { get; private set; }
 	private List<Character> _deadCharacters;
-	private int _activeCharacterTracker = 0; // This is tracking active characters in the list
-
-	public string PartyName;
+	private int _activeCharacterTracker = 0;
 
 	// Use these to place characters in the party at right positions
+	public float PlacementOffSetOperator;
 	private float _characterPlacementPos = 0;
 	private readonly float _characterPlacementOffset = 4.1f;
-	public float PlacementOffSetOperator;
 
 
 	private void Awake()
@@ -31,25 +33,50 @@ public class Party : MonoBehaviour
 		Backpack = GetComponentInChildren<Backpack>();
 	}
 
-	// When party starts its turn it will reset active characters to the beginning
-	// and then take action with that first character
+	// Reset active character, update info and take turn with first character
 	public void StartPartyTurn()
 	{
 		GameManager.UpdateBattleLog.Invoke($"Its {PartyName} turn");
 
 		UpdateCooldowns(); // Decrease cooldowns in the beginning of the turn
+
 		_activeCharacterTracker = 0;
         ActiveCharacter = CharacterList[_activeCharacterTracker];
-		UpdateActiveCharacterInfo();
+
+		UpdateAttackButtons();
+		ActiveCharacter.CharacterFrame.color = Color.green;
+
+		GameManager.UpdateBattleLog.Invoke($"Its {ActiveCharacter.Name} turn!");
+
 		PartyController.TurnOnController(ActiveCharacter);
 	}
 
-	// Use this to add characters into this party
+	// Take a turn with a next character
+	public void TakeCharacterAction()
+	{
+		// If all characters are finished, finish party turn
+		if (_activeCharacterTracker >= CharacterList.Count - 1)
+		{
+			FinishPartyTurn();
+		}
+		else
+		{
+			ChangeActiveCharacter();
+
+			UpdateAttackButtons();
+			ActiveCharacter.CharacterFrame.color = Color.green;
+
+			GameManager.UpdateBattleLog.Invoke($"Its {ActiveCharacter.Name} turn!");
+
+			PartyController.TurnOnController(ActiveCharacter);
+		}
+	}
+
+	// Gets and makes characters in the party at the beginning of level
 	public void AddCharacters(params GameObject[] characters)
     {
         foreach (GameObject original in characters)
         {
-			// Make a copy of the prefab and add it to list of alive characters
 			GameObject character = Instantiate(original, transform);
 			CharacterList.Add(character.GetComponent<Character>());
 
@@ -63,6 +90,7 @@ public class Party : MonoBehaviour
 	public void RemoveCharacter(Character character)
 	{
 		_characterPlacementPos -= _characterPlacementOffset;
+
 		CharacterList.Remove(character);
 		_deadCharacters.Add(character);
 	}
@@ -107,23 +135,10 @@ public class Party : MonoBehaviour
 		ResetCharacterPos();
 	}
 
-	// Call this for each character in the party
-	public void TakeCharacterAction()
+	// Reset character frame color back to default after character has done its action
+	public void ResetCharacterFrameColor()
 	{
-		// If all characters are finished, finish party turn
-		if (_activeCharacterTracker >= CharacterList.Count - 1)
-		{
-			FinishPartyTurn();
-		}
-		// Else change to next character, update attack buttons to new characters spells and
-		// wait for the controller to choose action for that character
-		else
-		{
-			ChangeActiveCharacter();
-			UpdateActiveCharacterInfo();
-			
-            PartyController.TurnOnController(ActiveCharacter);
-		}
+		ActiveCharacter.CharacterFrame.color = Color.white;
 	}
 
 	// After clearing dead characters, move remaining characters back in order in the party and
@@ -138,32 +153,28 @@ public class Party : MonoBehaviour
 		}
 	}
 
+	// Change to next character in the party
     private void ChangeActiveCharacter()
     {
-        // Update list tracker
         _activeCharacterTracker++;
 
-        // Make sure not loop out of list and change to new active character
         if (_activeCharacterTracker < CharacterList.Count)
         {
-			ActiveCharacter.CharacterFrame.color = Color.white;
+			ActiveCharacter.CharacterFrame.color = Color.white; // Reset last characters frame to inactive
             ActiveCharacter = CharacterList[_activeCharacterTracker];
         }
     }
 
-	private void UpdateActiveCharacterInfo()
+	// Update attack buttons info
+	private void UpdateAttackButtons()
 	{
         AttackButtons.UpdateAttackButtons(ActiveCharacter.BasicAttack, ActiveCharacter.SpecialAttack,
             ActiveCharacter.GetComponent<SpecialAttack>().RemainingCooldown,
             ActiveCharacter.GetComponent<Attack>().GetAttackStats(),
-            ActiveCharacter.GetComponent<SpecialAttack>().UpdateStatsInfoText());
-
-        ActiveCharacter.CharacterFrame.color = Color.green;
-
-        GameManager.UpdateBattleLog.Invoke($"Its {ActiveCharacter.Name} turn!");
+            ActiveCharacter.GetComponent<SpecialAttack>().GetSpecialAttackStats());
     }
 
-	// If special attack is ready skip, else substrack 1 from cooldown
+	// If cooldowns not ready decrease cooldown
     private void UpdateCooldowns()
 	{
 		foreach (Character character in CharacterList)
@@ -179,13 +190,7 @@ public class Party : MonoBehaviour
 		}
 	}
 
-	// Reset character frame color back to default after character has done its action
-	public void ResetCharacterFrameColor()
-	{
-		ActiveCharacter.CharacterFrame.color = Color.white;
-	}
-
-    // Tell battle this party has finished its turn and to change to other party
+    // Finish this partys turn
     private void FinishPartyTurn()
     {
 		ResetCharacterFrameColor();

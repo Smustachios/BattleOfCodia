@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Food : MonoBehaviour, IItem, IStatsRenderer
+public class Food : MonoBehaviour, IItem
 {
     public ItemType Type;
     public int HpRegen = 5;
 
     public Backpack Backpack { get; private set; }
     public bool IsInBackpack { get; private set; }
-
-    public Dictionary<string, int> Stats { get; private set; }
 	public StatsRenderer StatsInfoRenderer { get; private set; }
 
 
@@ -44,22 +42,20 @@ public class Food : MonoBehaviour, IItem, IStatsRenderer
     private void Awake()
     {
         Backpack = GetComponentInParent<Backpack>();
-		Stats = new Dictionary<string, int>();
 		StatsInfoRenderer = GetComponentInChildren<StatsRenderer>();
         IsInBackpack = true;
     }
 
 	private void Start()
 	{
-		UpdateStatsInfoText();
+		StatsInfoRenderer.UpdateStatsInfo(GetFoodStats());
 	}
 
-	public void UpdateStatsInfoText() 
+	public Dictionary<string, int> GetFoodStats()
 	{
-		Stats.Clear();
-
-		Stats.Add("Hp Regen", HpRegen);
-
-		StatsInfoRenderer.UpdateStatsInfo(Stats);
+		return new Dictionary<string, int>
+		{
+			{ "Hp Regen", HpRegen }
+		};
 	}
 }

@@ -30,7 +30,7 @@ public class SpecialAttack : AttackBase
     }
 
 	// Returns attack stats dictionary to caller
-	public Dictionary<string, int> UpdateStatsInfoText()
+	public Dictionary<string, int> GetSpecialAttackStats()
 	{
 		return new Dictionary<string, int>
 		{

@@ -1,6 +1,8 @@
 using UnityEngine;
-using System.Collections.Generic;
 
+/// <summary>
+/// Holds and builds levels
+/// </summary>
 public class Level : MonoBehaviour
 {
     // Hero characters
@@ -16,6 +18,7 @@ public class Level : MonoBehaviour
 
     private Battle _battle;
 	private ItemSpawner _itemSpawner;
+
 
     private void Awake()
     {
@@ -53,7 +56,7 @@ public class Level : MonoBehaviour
 		}
 	}
 
-	// Add characters with each new level to the party
+	// Add and items to each level
     private void LevelOne()
     {
         _battle.HeroParty.AddCharacters(Hero, Solider);

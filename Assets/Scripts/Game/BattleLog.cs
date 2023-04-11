@@ -1,27 +1,37 @@
 using UnityEngine;
 using TMPro;
 
+/// <summary>
+/// Shows and updates battle log text.
+/// </summary>
 public class BattleLog : MonoBehaviour
 {
-    private TMPro.TextMeshPro[] _battleTexts;
-    private int _nextText;
+    private TextMeshPro[] _battleTexts;
+
 
     private void Awake()
     {
         _battleTexts = GetComponentsInChildren<TextMeshPro>();
-        _nextText = _battleTexts.Length - 1;
-        GameManager.UpdateBattleLog += UpdateBattleLog;
+        
     }
 
-    public void UpdateBattleLog(string text)
+	private void Start()
+	{
+		GameManager.UpdateBattleLog += UpdateBattleLog;
+	}
+
+	// Battle log is updated when event is fired
+	public void UpdateBattleLog(string text)
     {
         MoveBattleLog();
-        _battleTexts[_battleTexts.Length - 1].text = text;
+        _battleTexts[^1].text = text;
     }
 
+	// Moves all old text along battle log, so last action would always
+	// be last text in the log
     private void MoveBattleLog()
     {
-        string text = _battleTexts[_battleTexts.Length - 1].text;
+        string text = _battleTexts[^1].text;
 
         for (int i = _battleTexts.Length - 1; i > 0; i--)
         {

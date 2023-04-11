@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Controls flow of the battle
+/// </summary>
 public class Battle : MonoBehaviour
 {
 	public Party HeroParty;
@@ -17,7 +20,7 @@ public class Battle : MonoBehaviour
 	public void StartBattle()
 	{
 		ActiveParty = HeroParty;
-		TakePartyTurn();
+		ActiveParty.StartPartyTurn();
 	}
 
 	// If player kills all the characters in monster party, load new level
@@ -47,13 +50,6 @@ public class Battle : MonoBehaviour
             ActiveParty = HeroParty;
         }
 
-		TakePartyTurn();
-    }
-
-    // This method will be called once party brodcasts its ending turn event
-    // It will change party and calls new active party start turn method
-    public void TakePartyTurn()
-	{
 		ActiveParty.StartPartyTurn();
 	}
 }

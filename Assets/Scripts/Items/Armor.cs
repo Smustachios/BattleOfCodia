@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Armor : MonoBehaviour, IItem, IStatsRenderer
+public class Armor : MonoBehaviour, IItem
 {
     public ItemType Type;
     public string Name;
@@ -18,7 +18,6 @@ public class Armor : MonoBehaviour, IItem, IStatsRenderer
     public bool IsInBackpack { get; private set; }
 
 	public StatsRenderer StatsInfoRenderer { get; private set; }
-	public Dictionary<string, int> Stats { get; private set; }
 
 	public void InvokeAction(Character character, Controller controller)
 	{
@@ -68,17 +67,17 @@ public class Armor : MonoBehaviour, IItem, IStatsRenderer
         character.MagicDefence -= MagicDefenceBonus;
     }
 
-	public void UpdateStatsInfoText() 
+	public Dictionary<string, int> GetItemStats() 
 	{
-		Stats.Add("Melee Dmg", MeleeDamageBonus);
-		Stats.Add("Range Dmg", RangeDamageBonus);
-		Stats.Add("Magic Dmg", MagicDamageBonus);
-
-		Stats.Add("Melee Defence", MeleeDefenceBonus);
-		Stats.Add("Range Defence", RangeDefenceBonus);
-		Stats.Add("Magic Defence", MagicDefenceBonus);
-
-		StatsInfoRenderer.UpdateStatsInfo(Stats);
+		return new Dictionary<string, int>
+		{
+			{ "Melee Dmg", MeleeDamageBonus },
+			{ "Range Dmg", RangeDamageBonus },
+			{ "Magic Dmg", MagicDamageBonus },
+			{ "Melee Defence", MeleeDefenceBonus },
+			{ "Range Defence", RangeDefenceBonus },
+			{ "Magic Defence", MagicDefenceBonus }
+		};
 	}
 
     public void RemoveFromBackpack()
@@ -90,12 +89,11 @@ public class Armor : MonoBehaviour, IItem, IStatsRenderer
     {
         Backpack = GetComponentInParent<Backpack>();
         StatsInfoRenderer = GetComponentInChildren<StatsRenderer>();
-        Stats = new Dictionary<string, int>();
         IsInBackpack = true;
     }
 
     private void Start()
 	{
-		UpdateStatsInfoText();
+		StatsInfoRenderer.UpdateStatsInfo(GetItemStats());
 	}
 }

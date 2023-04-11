@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Net;
 
 /// <summary>
 /// Computer character controller
@@ -30,23 +31,21 @@ public class CpuController : Controller
 			food.InvokeAction(_character, this);
 		}
 
-		// Computer equips item 25% chance if item is avaible and nothing is equiped yet
-		else if (itemCount > 0 && Random.value > 0.75f && _character.EquipedItem == null)
+		// Computer weapon item 15% chance if item is avaible and nothing is equiped yet
+		else if (backpack.Weapons.Count > 0 && Random.value > 0.75f && _character.EquipedItem == null)
 		{
-			if (Random.Range(0, 2) > 0)
-			{
-				IItem weapon = backpack.Weapons[Random.Range(0, backpack.Weapons.Count)].GetComponent<IItem>();
+			IItem weapon = backpack.Weapons[Random.Range(0, backpack.Weapons.Count)].GetComponent<IItem>();
 
-				weapon.InvokeAction(_character, this);
-			}
-			else
-			{
-				IItem item = backpack.Gear[Random.Range(0, backpack.Gear.Count)].GetComponent<IItem>();
-
-				item.InvokeAction(_character, this);
-			}
-			
+			weapon.InvokeAction(_character, this);
         }
+
+		// Computer weapon gear 15% chance if item is avaible and nothing is equiped yet
+		else if (backpack.Gear.Count > 0 && Random.value > 0.75f && _character.EquipedItem == null)
+		{
+			IItem item = backpack.Gear[Random.Range(0, backpack.Gear.Count)].GetComponent<IItem>();
+
+			item.InvokeAction(_character, this);
+		}
 
 		// Otherwise attack enemy
 		else
