@@ -29,7 +29,7 @@ public class Battle : MonoBehaviour
 	{
 		if (loser.PartyName == "Monster Party")
 		{
-			MonsterParty.ClearDeadCharacters();
+			MonsterParty.ClearParty();
 			_gameManager.ChangeLevel();
 		}
 		else

@@ -1,27 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Create items randomly.
+/// </summary>
 public class ItemSpawner : MonoBehaviour
 {
 	public List<GameObject> FoodPrefabs;
 	public List<GameObject> GearPrefabs;
 	public List<GameObject> WeaponPrefabs;
 
-	private GameManager _gameManager;
-	private Backpack _heroBackpack;
-	private Backpack _monsterBackpack;
 
-	private void Awake()
-	{
-		_gameManager = GetComponent<GameManager>();
-	}
-
-	private void Start()
-	{
-		_heroBackpack = _gameManager.HeroParty.GetComponentInChildren<Backpack>();
-		_monsterBackpack = _gameManager.MonsterParty.GetComponentInChildren<Backpack>();
-	}
-
+	// Spawn random armor items
 	public GameObject[] SpawnRandomItems(int nOfItems)
 	{
 		GameObject[] items = new GameObject[nOfItems];
@@ -35,6 +25,7 @@ public class ItemSpawner : MonoBehaviour
 		return items;
 	}
 
+	// Spawn random food items
     public GameObject[] SpawnRandomFood(int nOfFood)
     {
         GameObject[] items = new GameObject[nOfFood];
@@ -48,6 +39,7 @@ public class ItemSpawner : MonoBehaviour
         return items;
     }
 
+	// Spawn random weapon items
     public GameObject[] SpawnRandomWeapons(int nOfWeapons)
     {
         GameObject[] items = new GameObject[nOfWeapons];

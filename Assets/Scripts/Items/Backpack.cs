@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Represents backpack each party has.
+/// </summary>
 public class Backpack : MonoBehaviour
 {
 	public Party Owner { get; private set; }
@@ -21,17 +24,15 @@ public class Backpack : MonoBehaviour
 		Foods = new List<GameObject>();
 		Gear = new List<GameObject>();
 		Weapons = new List<GameObject>();
-
-		// Get all the itemslots in backpack
-		_itemTracker = 0;
-
-		foreach (ItemSlot itemSlot in GetComponentsInChildren<ItemSlot>())
-		{
-			_itemSlots.Add(itemSlot);
-		}
 	}
 
-	// Itemspawner will call this to add items in the backpack
+	private void Start()
+	{
+		_itemTracker = 0;
+		GetItemSlots();
+	}
+
+	// To add new item in the backpack you need to create it into it
 	public void AddItem(params GameObject[] items)
 	{
 		foreach (GameObject addedItem in items)
@@ -44,8 +45,9 @@ public class Backpack : MonoBehaviour
 			{
                 GameObject newItem = Instantiate(addedItem, _itemSlots[_itemTracker].transform);
                 _itemSlots[_itemTracker].GetComponent<ItemSlot>().AddItemToSlot(newItem);
+
                 _items.Add(newItem);
-				ReturnItemTypedList(newItem).Add(newItem);
+				ReturnItemTypedList(newItem).Add(newItem); // Add into specific type list
                 _itemTracker++;
             }
 		}
@@ -69,6 +71,22 @@ public class Backpack : MonoBehaviour
 		}
 	}
 
+	// Clear backpack at the end of the battle
+	public void ClearBackpack()
+	{
+		foreach (GameObject item in _items)
+		{
+			Destroy(item);
+		}
+
+		_items.Clear();
+		Foods.Clear();
+		Gear.Clear();
+		Weapons.Clear();
+		_itemTracker = 0;
+	}
+
+	// Check what type of list a item should go
 	private List<GameObject> ReturnItemTypedList(GameObject item)
 	{
 		return item.GetComponent<IItem>().ReturnItemType() switch
@@ -78,5 +96,13 @@ public class Backpack : MonoBehaviour
 			ItemType.Weapon => Weapons,
 			_ => null
 		};
+	}
+
+	private void GetItemSlots()
+	{
+		foreach (ItemSlot itemSlot in GetComponentsInChildren<ItemSlot>())
+		{
+			_itemSlots.Add(itemSlot);
+		}
 	}
 }

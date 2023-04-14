@@ -1,29 +1,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Consumable food in the game that restores hp to character.
+/// </summary>
 public class Food : MonoBehaviour, IItem
 {
     public ItemType Type;
     public int HpRegen = 5;
-
     public Backpack Backpack { get; private set; }
     public bool IsInBackpack { get; private set; }
 	public StatsRenderer StatsInfoRenderer { get; private set; }
 
 
+	private void Awake()
+	{
+		Backpack = GetComponentInParent<Backpack>();
+		StatsInfoRenderer = GetComponentInChildren<StatsRenderer>();
+		IsInBackpack = true;
+	}
+
+	private void Start()
+	{
+		StatsInfoRenderer.UpdateStatsInfo(GetFoodStats());
+	}
+
+	// Invoke character action on food item
 	public void InvokeAction(Character character, Controller controller)
 	{
-		UseItem(character, controller);
+		UseItem(character);
 		DestroyItem();
+
+		controller.IsControllersTurn = false;
 		Backpack.Owner.ResetCharacterFrameColor();
 		Backpack.Owner.TakeCharacterAction();
 	}
 
-    // Use item and finish turn with active character
-    public void UseItem(Character character, Controller controller)
+    public void UseItem(Character character)
     {
-        controller.IsControllersTurn = false;
         character.ConsumeFood(this);
+
         GameManager.UpdateBattleLog.Invoke($"{character.Name} healed {HpRegen} Hp!");
     }
 
@@ -39,18 +55,7 @@ public class Food : MonoBehaviour, IItem
         return Type;
     }
 
-    private void Awake()
-    {
-        Backpack = GetComponentInParent<Backpack>();
-		StatsInfoRenderer = GetComponentInChildren<StatsRenderer>();
-        IsInBackpack = true;
-    }
-
-	private void Start()
-	{
-		StatsInfoRenderer.UpdateStatsInfo(GetFoodStats());
-	}
-
+	// Get food stats dictionary
 	public Dictionary<string, int> GetFoodStats()
 	{
 		return new Dictionary<string, int>

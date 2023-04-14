@@ -95,19 +95,6 @@ public class Party : MonoBehaviour
 		_deadCharacters.Add(character);
 	}
 
-	// In the end of the battle clear all dead characters from the scene
-	// and from the dead character list
-	public void ClearDeadCharacters()
-	{
-		foreach (Character character in _deadCharacters)
-		{
-			Destroy(character.gameObject);
-		}
-
-		_deadCharacters.Clear();
-		_characterPlacementPos = 0; // Reset character placement tracker
-	}
-
 	// Check after each attack if there is any alive characters in the enemy party
 	public void CheckPartyStatus()
 	{
@@ -127,7 +114,7 @@ public class Party : MonoBehaviour
 	{
 		foreach (Character character in CharacterList)
 		{
-			character.ResetHp();
+			//character.ResetHp();
 			character.GetComponent<SpecialAttack>().RemainingCooldown = 0;
 		}
 
@@ -141,11 +128,39 @@ public class Party : MonoBehaviour
 		ActiveCharacter.CharacterFrame.color = Color.white;
 	}
 
+	// Clear party after battle is finished
+	public void ClearParty()
+	{
+		ClearDeadCharacters();
+		Backpack.ClearBackpack();
+
+		foreach (Character character in CharacterList)
+		{
+			Destroy(character.gameObject);
+		}
+
+		CharacterList.Clear();
+		_characterPlacementPos = 0;
+	}
+
+	// Clear dead characters from the party
+	private void ClearDeadCharacters()
+	{
+		foreach (Character character in _deadCharacters)
+		{
+			Destroy(character.gameObject);
+		}
+
+		_deadCharacters.Clear();
+	}
+
 	// After clearing dead characters, move remaining characters back in order in the party and
 	// make character pos tracker ready for new characters entering party
 	private void ResetCharacterPos()
 	{
-		foreach(Character character in CharacterList)
+		_characterPlacementPos = 0;
+
+		foreach (Character character in CharacterList)
 		{
 			character.transform.position = character.ParentParty.transform.position;
 			character.transform.position += new Vector3(0, _characterPlacementPos, 0);

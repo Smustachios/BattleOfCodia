@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// All weapons and gear are armor type.
+/// Holds stats and basic methods of them.
+/// </summary>
 public class Armor : MonoBehaviour, IItem
 {
     public ItemType Type;
@@ -16,25 +20,43 @@ public class Armor : MonoBehaviour, IItem
 
     public Backpack Backpack { get; private set; }
     public bool IsInBackpack { get; private set; }
-
 	public StatsRenderer StatsInfoRenderer { get; private set; }
 
+
+	private void Awake()
+	{
+		Backpack = GetComponentInParent<Backpack>();
+		StatsInfoRenderer = GetComponentInChildren<StatsRenderer>();
+		IsInBackpack = true;
+	}
+
+	private void Start()
+	{
+		StatsInfoRenderer.UpdateStatsInfo(GetItemStats());
+	}
+
+	// Using armor action
 	public void InvokeAction(Character character, Controller controller)
 	{
-		UseItem(character, controller);
+		UseItem(character);
 
+		// Finish character action
+
+		controller.IsControllersTurn = false;
 		Backpack.Owner.ResetCharacterFrameColor();
 		Backpack.Owner.TakeCharacterAction();
 	}
 
-    public void UseItem(Character character, Controller controller)
+	// Equip item on character
+    public void UseItem(Character character)
     {
-        controller.IsControllersTurn = false;
 		character.EquipItem(this);
-		GameManager.UpdateBattleLog.Invoke($"{character.Name} equiped {Name}!");
 		Backpack.RemoveItem(this.gameObject);
+
+		GameManager.UpdateBattleLog.Invoke($"{character.Name} equiped {Name}!");
 	}
 
+	// Get item type for keeping track of typed list
     public ItemType ReturnItemType()
     {
         return Type;
@@ -45,6 +67,7 @@ public class Armor : MonoBehaviour, IItem
         Destroy(this.gameObject);
     }
 
+	// Character calls to add stats from equiped item to its stats
     public void AddStats(Character character)
     {
         character.MeleeDamage += MeleeDamageBonus;
@@ -56,6 +79,7 @@ public class Armor : MonoBehaviour, IItem
         character.MagicDefence += MagicDefenceBonus;
     }
 
+	// If character chances item or dies remove item perks from character
     public void RemoveStats(Character character)
     {
         character.MeleeDamage -= MeleeDamageBonus;
@@ -67,6 +91,7 @@ public class Armor : MonoBehaviour, IItem
         character.MagicDefence -= MagicDefenceBonus;
     }
 
+	// Get stats dictionary
 	public Dictionary<string, int> GetItemStats() 
 	{
 		return new Dictionary<string, int>
@@ -84,16 +109,4 @@ public class Armor : MonoBehaviour, IItem
     {
         IsInBackpack = false;
     }
-
-    private void Awake()
-    {
-        Backpack = GetComponentInParent<Backpack>();
-        StatsInfoRenderer = GetComponentInChildren<StatsRenderer>();
-        IsInBackpack = true;
-    }
-
-    private void Start()
-	{
-		StatsInfoRenderer.UpdateStatsInfo(GetItemStats());
-	}
 }
