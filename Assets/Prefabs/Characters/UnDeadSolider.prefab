@@ -107,11 +107,11 @@ MonoBehaviour:
   Name: Undead Solider
   Type: 0
   CurrentHp: 0
-  MaxHp: 15
+  MaxHp: 13
   MeleeDamage: 2
   RangeDamage: 0
   MagicDamage: 0
-  MeleeDefence: 2
+  MeleeDefence: 1
   RangeDefence: 0
   MagicDefence: -1
   BasicAttack: {fileID: 21300000, guid: 300abdf8cbdd5c742a05b6506767fd64, type: 3}
@@ -182,8 +182,8 @@ MonoBehaviour:
   MaxBaseDamage: 2
   MissChance: 0
   CritChance: 0.05
-  MinCritBonus: 0
-  MaxCritBonus: 0
+  MinCritBonus: 1
+  MaxCritBonus: 3
   Cooldown: 4
   RemainingCooldown: 0
 --- !u!1001 &543105819870348363

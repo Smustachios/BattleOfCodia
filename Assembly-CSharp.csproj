@@ -62,6 +62,7 @@
     <Compile Include="Assets\Scripts\Game\Battle.cs" />
     <Compile Include="Assets\Scripts\Actions\AttackBase.cs" />
     <Compile Include="Assets\Scripts\Game\Level.cs" />
+    <Compile Include="Assets\Scripts\Game\GameOver.cs" />
     <Compile Include="Assets\Scripts\Actions\Attack.cs" />
     <Compile Include="Assets\Scripts\Actions\AttackButtons.cs" />
     <Compile Include="Assets\Scripts\Game\GameManager.cs" />

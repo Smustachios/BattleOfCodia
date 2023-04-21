@@ -7,6 +7,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4168524795009486586, guid: d42c1439026de68479ea563e29d664fa, type: 3}
+      propertyPath: m_margin.w
+      value: 1.3419031
+      objectReference: {fileID: 0}
+    - target: {fileID: 4168524795009486586, guid: d42c1439026de68479ea563e29d664fa, type: 3}
+      propertyPath: m_margin.x
+      value: 8.888605
+      objectReference: {fileID: 0}
+    - target: {fileID: 4168524795009486586, guid: d42c1439026de68479ea563e29d664fa, type: 3}
+      propertyPath: m_margin.y
+      value: 1.3431772
+      objectReference: {fileID: 0}
+    - target: {fileID: 4168524795009486586, guid: d42c1439026de68479ea563e29d664fa, type: 3}
+      propertyPath: m_margin.z
+      value: 8.906459
+      objectReference: {fileID: 0}
     - target: {fileID: 6054300038595093463, guid: d42c1439026de68479ea563e29d664fa, type: 3}
       propertyPath: m_Name
       value: FoodStatsTextRenderer

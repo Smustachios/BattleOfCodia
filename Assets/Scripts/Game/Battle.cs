@@ -10,6 +10,7 @@ public class Battle : MonoBehaviour
 
 	public Party ActiveParty { get; private set; }
 	private GameManager _gameManager;
+	private int _round = 0;
 
 	private void Awake()
 	{
@@ -19,22 +20,29 @@ public class Battle : MonoBehaviour
 	// Start battle with hero party and start looping between both parties from here
 	public void StartBattle()
 	{
+		_round++;
 		ActiveParty = HeroParty;
 		ActiveParty.StartPartyTurn();
 	}
 
-	// If player kills all the characters in monster party, load new level
-	// Otherwise game is lost
+	// Once battle round is finished load new level or show game over
 	public void FinishBattle(Party loser)
 	{
 		if (loser.PartyName == "Monster Party")
 		{
-			MonsterParty.ClearParty();
-			_gameManager.ChangeLevel();
+			if (_round <= 5)
+			{
+				MonsterParty.ClearParty();
+				_gameManager.ChangeLevel();
+			}
+			else
+			{
+				_gameManager.ActivateGameOver("You win!");
+			}
 		}
 		else
 		{
-			Debug.Log("YOU LOSE");
+			_gameManager.ActivateGameOver("You lose!");
 		}
 	}
 

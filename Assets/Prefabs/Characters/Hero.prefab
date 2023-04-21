@@ -182,8 +182,8 @@ MonoBehaviour:
   MaxBaseDamage: 4
   MissChance: 0
   CritChance: 0.1
-  MinCritBonus: 0
-  MaxCritBonus: 0
+  MinCritBonus: 2
+  MaxCritBonus: 2
   Cooldown: 3
   RemainingCooldown: 0
 --- !u!1001 &3174642863248801619

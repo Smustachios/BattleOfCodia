@@ -37,6 +37,7 @@ public class Party : MonoBehaviour
 	public void StartPartyTurn()
 	{
 		GameManager.UpdateBattleLog.Invoke($"Its {PartyName} turn");
+		GameManager.UpdateActionText.Invoke($"Its {PartyName} turn");
 
 		UpdateCooldowns(); // Decrease cooldowns in the beginning of the turn
 
@@ -47,6 +48,7 @@ public class Party : MonoBehaviour
 		ActiveCharacter.CharacterFrame.color = Color.green;
 
 		GameManager.UpdateBattleLog.Invoke($"Its {ActiveCharacter.Name} turn!");
+		GameManager.UpdateActionText.Invoke($"Its {ActiveCharacter.Name} turn!");
 
 		PartyController.TurnOnController(ActiveCharacter);
 	}

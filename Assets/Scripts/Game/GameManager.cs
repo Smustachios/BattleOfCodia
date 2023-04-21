@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 
 /// <summary>
 /// Manages level changing and battle log
@@ -9,11 +10,13 @@ public class GameManager : MonoBehaviour
     public Party HeroParty;
     public Party MonsterParty;
     public BattleLog BattleLog;
+	public GameOver GameOver;
 
     private Level _levelBuilder;
 	private int _level = 1;
 
     public static Action<string> UpdateBattleLog;
+	public static Func<string, IEnumerable> UpdateActionText;
 
 
     private void Awake()
@@ -32,5 +35,11 @@ public class GameManager : MonoBehaviour
 	{
 		_level++;
 		_levelBuilder.StartLevel(_level);
+	}
+
+	// Activate game over panel
+	public void ActivateGameOver(string result)
+	{
+		GameOver.ShowGameOver(result);
 	}
 }

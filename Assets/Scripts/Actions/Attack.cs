@@ -32,8 +32,8 @@ public class Attack : AttackBase
 			{ "Max Dmg", MaxBaseDamage },
 			{ "Miss %", (int)(MissChance * 10) },
 			{ "Crit %", (int)(CritChance * 10) },
-			{ "Min Crit", MinCritBonus },
-			{ "Max Crit", MaxCritBonus }
+			{ "Min Crit bonus", MinCritBonus },
+			{ "Max Crit bonus", MaxCritBonus }
 		};
 	}
 }

@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using TMPro;
 
 /// <summary>
 /// Updates attack buttons info in the beginning of the turn for a active character.
@@ -10,7 +9,6 @@ public class AttackButtons : MonoBehaviour
 	public StatsRenderer[] AttackStatRenderers;
 	public SpriteRenderer[] AttackButtonFrames;
 
-    [SerializeField] private TextMeshPro _specialAttackCooldown; // Special attack cooldown text on top of the button
     private SpriteRenderer[] _attackSprites;
 	
 
@@ -36,12 +34,10 @@ public class AttackButtons : MonoBehaviour
         {
             ColorUtility.TryParseHtmlString("#463D3D", out Color color);
             _attackSprites[1].color = color;
-            _specialAttackCooldown.text = specialAttackCooldown.ToString();
         }
         else
         {
             _attackSprites[1].color = Color.white;
-            _specialAttackCooldown.text = null;
         }
 
         foreach (SpriteRenderer frame in AttackButtonFrames)

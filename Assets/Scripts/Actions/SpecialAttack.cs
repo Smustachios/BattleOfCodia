@@ -38,9 +38,10 @@ public class SpecialAttack : AttackBase
 			{ "Max Dmg", MaxBaseDamage },
 			{ "Miss %", (int)(MissChance * 10) },
 			{ "Crit %", (int)(CritChance * 10) },
-			{ "Min Crit", MinCritBonus },
-			{ "Max Crit", MaxCritBonus },
-			{ "Cooldown", Cooldown }
+			{ "Min Crit bonus", MinCritBonus },
+			{ "Max Crit bonus", MaxCritBonus },
+			{ "Cooldown", Cooldown },
+			{ "Remaining cooldown", RemainingCooldown }
 		};
 	}
 }
